@@ -28,10 +28,16 @@ export const DOMAINS = [
   { slug: 'devinfra', label: 'Developer / web infrastructure' },
 ];
 
+// Order is semantic, not alphabetical or packing-optimised: it traces the
+// arc of an engagement — arrive/scope, build the structure, deliver, run it
+// live under a fixed date, report, ship it yourself. Stakeholder sits second
+// because alignment has to precede execution, not because it minimises
+// segmented bars in the matrix. This order is load-bearing for the Coverage
+// Matrix's column sequence — do not reorder for layout convenience.
 export const CAPABILITIES = [
   { slug: 'build-from-zero', label: 'Build from zero' },
-  { slug: 'delivery', label: 'Delivery & release' },
   { slug: 'stakeholder', label: 'Stakeholder / vendor' },
+  { slug: 'delivery', label: 'Delivery & release' },
   { slug: 'live-ops', label: 'Live ops, fixed date' },
   { slug: 'research', label: 'Research & reporting' },
   { slug: 'ships-it-herself', label: 'Ships it herself' },

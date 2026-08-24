@@ -21,6 +21,22 @@
   font-display: swap;
 }
 
+/* Metric-matched fallback for the display face. N8 specifies font-display:
+   swap, which means the fallback renders first on every load — measured
+   in a real browser, bold Arial at this weight/size rendered the thesis
+   sentence ~13% wider than Archivo, enough to change the line-wrap and
+   produce a 0.44 layout-shift score on load. size-adjust scales the
+   fallback to Archivo's real measured width so the swap doesn't move
+   anything, instead of relying on the font arriving before first paint. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial');
+  size-adjust: 88.28%;
+  ascent-override: 87.8%;
+  descent-override: 21%;
+  line-gap-override: 0%;
+}
+
 @font-face {
   font-family: 'Source Serif 4';
   src: url('../fonts/source-serif-4-regular.woff2') format('woff2');
@@ -53,6 +69,36 @@
   font-display: swap;
 }
 
+/* Metric-matched fallbacks for the other two roles, same reasoning as
+   Archivo above. This one mattered more than expected: the mobile card
+   list repeats serif/mono text across ~24 card instances by default, so
+   even a small per-card reflow when these fonts swap in accumulates into
+   a large shift of everything below the list (measured: 0.23 layout-shift
+   score on the credentials strip, ~4700px down the page, before this fix).
+   Ratios are measured in a real browser (fallback-stack width vs. real
+   font width, same sample text), not estimated. The mono ratio is
+   calibrated against Menlo specifically — this environment didn't have
+   San Francisco Mono installed to measure directly, so a real Mac
+   (SFMono-Regular, first in the fallback stack) may not match quite as
+   exactly, though the two are close enough that this should still help
+   substantially. */
+@font-face {
+  font-family: 'Source Serif 4 Fallback';
+  src: local('Georgia');
+  size-adjust: 91.46%;
+  ascent-override: 103.6%;
+  descent-override: 33.5%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Menlo');
+  size-adjust: 94.59%;
+  ascent-override: 102%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
 :root {
   /* ---- Colour: RAG as a semantic system, never decorative ----
      Green/Amber/Red are reserved for case outcome status only — never a
@@ -70,9 +116,9 @@
   --color-red: #B23A34;     /* the constraint itself */
 
   /* ---- Type: three roles, three faces, never blended ---- */
-  --font-display: 'Archivo', Arial Narrow, sans-serif;
-  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+  --font-display: 'Archivo', 'Archivo Fallback', Arial Narrow, sans-serif;
+  --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --weight-display: 900;
   --weight-serif: 400;
