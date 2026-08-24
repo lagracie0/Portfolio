@@ -1,0 +1,129 @@
+/* Design tokens — approved in the Step 2 review (RAG Specimen Sheet).
+   Colours and typefaces are locked; do not change without a new review.
+   Spacing and elevation are this file's own additions (not part of that
+   review) — restrained on purpose, since the brief reserves boldness for
+   the Coverage Matrix and asks everything else to stay quiet. */
+
+/* ---- Fonts: real subsetted files, not the full variable fonts ----
+   Archivo is shipped as a single static instance (weight 900, width 125%
+   expanded) — the only display combination this site uses, so there is no
+   case for the full variable font. Source Serif 4 ships as two static
+   instances (regular + italic, both at text optical size). Mono is
+   JetBrains Mono, chosen over IBM Plex Mono because Plex's humanist-grotesk
+   letterforms read too close to Archivo's texture at small sizes — see the
+   Step 2 specimen for the side-by-side. */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fonts/archivo-black-expanded.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('../fonts/source-serif-4-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('../fonts/source-serif-4-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Colour: RAG as a semantic system, never decorative ----
+     Green/Amber/Red are reserved for case outcome status only — never a
+     button, a link, or a highlight. That is what keeps the meaning
+     singular (WRD N5). Contrast ratios below are against --color-paper
+     (as plain text) and as white text on the fill (as a status badge);
+     both are documented and verified in the Step 2 specimen. */
+  --color-paper: #EFF1EE;   /* page background */
+  --color-ink: #14171A;     /* body text, headings, links, focus rings */
+  --color-line: #5B6169;    /* borders, rules, secondary text */
+  --color-white: #FFFFFF;   /* badge text on a RAG fill */
+
+  --color-green: #2A7549;   /* delivered on the committed date */
+  --color-amber: #8F5B10;   /* recovered after a real constraint */
+  --color-red: #B23A34;     /* the constraint itself */
+
+  /* ---- Type: three roles, three faces, never blended ---- */
+  --font-display: 'Archivo', Arial Narrow, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --weight-display: 900;
+  --weight-serif: 400;
+  --weight-mono-regular: 400;
+  --weight-mono-bold: 700;
+
+  /* Display — thesis line, page titles, case titles. Used sparingly. */
+  --text-display-1: clamp(2.75rem, 2rem + 3vw, 5.5rem);
+  --text-display-2: clamp(2rem, 1.6rem + 1.5vw, 3rem);
+  --leading-display-1: 1.05;
+  --leading-display-2: 1.15;
+  --tracking-display-1: -0.01em;
+  --tracking-display-2: 0em;
+
+  /* Serif — case narrative body copy. */
+  --text-body: 1.125rem;       /* 18px */
+  --text-body-lead: 1.25rem;   /* 20px, opening sentence of a case */
+  --leading-body: 1.6;
+  --leading-body-lead: 1.5;
+  --tracking-body: 0em;
+  --measure-body: 65ch;        /* comfortable reading line length */
+
+  /* Mono — two distinct uses, never the same treatment.
+     "Inline" is normal case for dates/metrics running in text or tables.
+     "Label" is uppercase + tracked for axis labels, status badges and
+     section eyebrows — deliberately differentiated from Archivo's voice. */
+  --text-mono-inline: 0.9375rem;  /* 15px */
+  --text-mono-label: 0.75rem;     /* 12px */
+  --leading-mono-inline: 1.5;
+  --leading-mono-label: 1.2;
+  --tracking-mono-inline: 0em;
+  --tracking-mono-label: 0.08em;
+
+  /* ---- Spacing: an 8px-based scale ---- */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-7: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-9: 6rem;     /* 96px */
+
+  /* ---- Elevation: flat and graphic on purpose ----
+     The brief explicitly rules out glassmorphism and soft equal-weight
+     card shadows, so elevation here is a hairline, not a blur — depth
+     comes from borders and colour blocks, not drop shadows. */
+  --border-width: 1px;
+  --border-color: var(--color-line);
+  --shadow-none: none;
+  --shadow-hairline: 0 1px 0 var(--color-line);
+  --shadow-focus: 0 0 0 3px var(--color-ink);
+}
