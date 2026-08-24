@@ -25,7 +25,21 @@ Every case's domain + capabilities were checked against every filled cell in the
 3. **Developer/web infrastructure × Stakeholder/vendor** — C6 and C9 are the only devinfra cases; neither is tagged stakeholder.
 4. **Consumer & marketplaces × Research & reporting** — C7 and C10 are the only consumer cases; neither is tagged research. (C9 is the one case with a research tag near this domain, but §6.1 gives it a dual label, "Developer infra / consumer," and it's mapped to devinfra here, not consumer — so it can't cover both cells with a single `domain` field.)
 
-None of these are fixed in the data yet — they need one of: a real capability this case actually demonstrates that WRD's one-liner didn't mention (confirmed by Ayomide, then added), a matrix cell correction (the checkmark comes out of §4.1), or an 11th case that isn't in the inventory yet. Flagging rather than picking.
+**Resolved, per Ayomide's ruling that §4.1 was her own inference and the data file wins by default:**
+
+1. **Civic & elections × Research & reporting** — still open. Hinges on facts only Ayomide has; no data change made.
+2. **Events & community × Build from zero** — conditionally resolved: Ayomide's contract-period CV bullet describes building delivery infrastructure for clients with no PM function. If Osun Tech Festival is one of those clients, `build-from-zero` gets added to C5's capabilities. **Waiting on her confirmation that Osun Tech Festival is specifically covered by that bullet** before editing the data.
+3. **Developer/web infrastructure × Stakeholder/vendor** — dropped. HostMeNG's CV line describes collaborating with stakeholders, which is participation, not the stakeholder/vendor *management* capability. The WRD's §4.1 checkmark here was wrong; no case should carry this tag. No data change needed (none currently claims it).
+4. **Consumer & marketplaces × Research & reporting** — resolved by the C9 split below. Calnita (domain: consumer) carries `research`, backed by a real CV fact ("pioneered user research initiatives... shaped the roadmap").
+
+## Stakeholder capability — open design question, not yet decided
+
+Ayomide flagged that `stakeholder` appears in 6 of 8 distinct capability-sets in the data — a tag that common to nearly everything proves nothing on its own. Two options on the table, neither applied yet:
+
+- **Split it** into two more discriminating capabilities — vendor/contract management vs. partner/sponsor development. Her own examples: the Flutterwave sponsorship pipeline (C8) is partner/sponsor development; a venue contract (plausibly C5, Osun Tech Festival) is vendor/contract management. This is a change to the `CAPABILITIES` axis itself (6 columns → 7), which means redoing the column-order and segmentation analysis from Step-3-prep — a real amount of rework, and accurate per-case reclassification of the other stakeholder-tagged cases (C1, C2, C4, C7) can't be done confidently yet since their six-block narratives are still `[NEEDS INPUT]`.
+- **Leave it as one column, but stop counting it as evidence** — treat it as context rather than a claim (e.g. don't let it count toward the "how many domains does this capability appear in" argument the matrix is built to make).
+
+Recommendation: defer the actual choice until Phase 0 content exists for the stakeholder-tagged cases — right now a split would be executed mostly by guessing which flavour each case is, which is exactly the kind of invented-claim risk R1 exists to prevent. Flagging, not deciding.
 
 ## Review — Step 1
 

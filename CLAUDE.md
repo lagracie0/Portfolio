@@ -16,6 +16,8 @@ That means: explain your reasoning, never assume she'll catch a problem, and tel
 
 **Diagnose before fixing.** When something breaks, find the actual cause and state it before changing code. No speculative edits.
 
+**Known open discrepancies get re-surfaced every time the affected data is used, not just once at discovery.** Logging a mismatch in `tasks/todo.md` the first time it's found is not enough — check the log again before building anything on top of that data, and say the discrepancy out loud again if it's still unresolved. (This happened: the Civic × Research mismatch between the WRD's matrix and the case data was found and logged during Step 1, then silently built on without re-raising it during the matrix design work.)
+
 **Ask before scope changes.** No extra pages, no extra libraries, no CMS, no framework, beyond what the WRD specifies.
 
 **Never invent a justification.** If you departed from something, say so plainly and give the real reason — do not construct a tidy rationale after the fact.

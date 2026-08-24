@@ -278,18 +278,15 @@ export const CASES = [
   },
   {
     // Split from the original merged "hostmeng-calnita-product-work" case per
-    // instruction: different employers, different domains. Domain below is a
-    // proposed reading of the WRD's original combined label for this case,
-    // "Developer infra / consumer" (§6.1) — Clea/Pushbio read as the
-    // developer-infra half — NOT yet confirmed. Capabilities are inherited
-    // unsplit from the original combined tag ("Delivery, research"); whether
-    // both genuinely apply to this half specifically, or only one does, is
-    // also unconfirmed.
+    // instruction: different employers, different domains. Domain and
+    // capabilities confirmed. The "research" tag here is market-trend and
+    // feedback analysis — a different flavour of research from Calnita's
+    // user research below; both are real, per instruction.
     slug: 'hostmeng-clea-pushbio',
     title: 'Clea and Pushbio enhancements',
     org: 'HostMeNG',
-    domain: 'devinfra', // PROPOSED — needs confirmation
-    capabilities: ['delivery', 'research'], // inherited from the pre-split tag — needs confirmation
+    domain: 'devinfra',
+    capabilities: ['delivery', 'research'],
     priority: 'P1',
     dateStart: '2024-07', // per your note; WRD open question 6 also gives "July 2024"
     dateEnd: '[NEEDS INPUT: engagement end date, or "ongoing"]',
@@ -300,7 +297,7 @@ export const CASES = [
       '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      '[NEEDS INPUT: the structures introduced at HostMeNG]',
+      'Market-trend and feedback analysis work [NEEDS INPUT: what was analysed, what method, and how findings fed back into Clea/Pushbio decisions]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
@@ -317,14 +314,15 @@ export const CASES = [
   },
   {
     // Split from the original merged "hostmeng-calnita-product-work" case —
-    // see the note on the HostMeNG case above. Domain here is the "consumer"
-    // half of the WRD's original combined label — beauty MVPs read as
-    // consumer-facing — NOT yet confirmed.
+    // see the note on the HostMeNG case above. Domain and capabilities
+    // confirmed. This resolves the WRD §4.1 vs. data mismatch on
+    // Consumer & marketplaces × Research & reporting — Calnita is real
+    // consumer-domain evidence for that cell.
     slug: 'calnita-beauty-mvps',
     title: 'Three beauty MVPs',
     org: 'Calnita',
-    domain: 'consumer', // PROPOSED — needs confirmation
-    capabilities: ['delivery', 'research'], // inherited from the pre-split tag — needs confirmation
+    domain: 'consumer',
+    capabilities: ['delivery', 'research'],
     priority: 'P1',
     dateStart: '2023', // per your note ("2023–24"); exact month NEEDS INPUT
     dateEnd: '2024-03', // per WRD open question 6 ("Calnita ended March 2024")
@@ -335,7 +333,7 @@ export const CASES = [
       '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      '[NEEDS INPUT: the structures introduced at Calnita]',
+      'User research initiatives that directly shaped the product roadmap [NEEDS INPUT: specific method — surveys, interviews, usability testing — and cadence]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
