@@ -277,36 +277,77 @@ export const CASES = [
     ],
   },
   {
-    slug: 'hostmeng-calnita-product-work',
-    title: 'Clea & Pushbio enhancements, and three beauty MVPs',
-    org: 'HostMeNG / Calnita',
-    domain: 'devinfra',
-    capabilities: ['delivery', 'research'],
+    // Split from the original merged "hostmeng-calnita-product-work" case per
+    // instruction: different employers, different domains. Domain below is a
+    // proposed reading of the WRD's original combined label for this case,
+    // "Developer infra / consumer" (§6.1) — Clea/Pushbio read as the
+    // developer-infra half — NOT yet confirmed. Capabilities are inherited
+    // unsplit from the original combined tag ("Delivery, research"); whether
+    // both genuinely apply to this half specifically, or only one does, is
+    // also unconfirmed.
+    slug: 'hostmeng-clea-pushbio',
+    title: 'Clea and Pushbio enhancements',
+    org: 'HostMeNG',
+    domain: 'devinfra', // PROPOSED — needs confirmation
+    capabilities: ['delivery', 'research'], // inherited from the pre-split tag — needs confirmation
     priority: 'P1',
-    dateStart: '[NEEDS INPUT: WRD open question notes Calnita ended March 2024 and HostMeNG began July 2024 — confirm exact dates for each, and whether this should be two separate cases rather than one]',
-    dateEnd: '[NEEDS INPUT: see above]',
+    dateStart: '2024-07', // per your note; WRD open question 6 also gives "July 2024"
+    dateEnd: '[NEEDS INPUT: engagement end date, or "ongoing"]',
     situation: [
-      '[NEEDS INPUT: 2–3 sentences on what existed at HostMeNG (Clea, Pushbio) and separately at Calnita (beauty MVPs) when she arrived]',
+      '[NEEDS INPUT: 2–3 sentences on what existed at HostMeNG when she arrived]',
     ],
     missing: [
-      '[NEEDS INPUT: the specific structural absence at each]',
+      '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      '[NEEDS INPUT: the structures introduced at HostMeNG and at Calnita]',
+      '[NEEDS INPUT: the structures introduced at HostMeNG]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
     ],
     outcome: [
-      { text: '[NEEDS INPUT: outcome statement — HostMeNG thread]', status: '[NEEDS INPUT: green/amber/red]' },
-      { text: '[NEEDS INPUT: outcome statement — Calnita thread]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: outcome statement]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
     metrics: [
-      { value: '+15%', label: 'retention on Clea and Pushbio (HostMeNG)', method: '[NEEDS INPUT: retention of what user cohort, measured how, over what period, per R2]' },
-      { value: '90%', label: 'of 3 beauty MVPs shipped on-time (Calnita)', method: '[NEEDS INPUT: "on-time" against what committed dates, and what counted as the 10% that was not, per R2]' },
+      { value: '+15%', label: 'retention on Clea and Pushbio', method: '[NEEDS INPUT: retention of what user cohort, measured how, over what period, per R2]' },
     ],
     artifacts: [
-      '[NEEDS INPUT: a redacted/reconstructed artifact from either engagement]',
+      '[NEEDS INPUT: a redacted/reconstructed artifact from this engagement]',
+    ],
+  },
+  {
+    // Split from the original merged "hostmeng-calnita-product-work" case —
+    // see the note on the HostMeNG case above. Domain here is the "consumer"
+    // half of the WRD's original combined label — beauty MVPs read as
+    // consumer-facing — NOT yet confirmed.
+    slug: 'calnita-beauty-mvps',
+    title: 'Three beauty MVPs',
+    org: 'Calnita',
+    domain: 'consumer', // PROPOSED — needs confirmation
+    capabilities: ['delivery', 'research'], // inherited from the pre-split tag — needs confirmation
+    priority: 'P1',
+    dateStart: '2023', // per your note ("2023–24"); exact month NEEDS INPUT
+    dateEnd: '2024-03', // per WRD open question 6 ("Calnita ended March 2024")
+    situation: [
+      '[NEEDS INPUT: 2–3 sentences on what existed at Calnita when she arrived]',
+    ],
+    missing: [
+      '[NEEDS INPUT: the specific structural absence]',
+    ],
+    built: [
+      '[NEEDS INPUT: the structures introduced at Calnita]',
+    ],
+    decisions: [
+      '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
+    ],
+    outcome: [
+      { text: '[NEEDS INPUT: outcome statement]', status: '[NEEDS INPUT: green/amber/red]' },
+    ],
+    metrics: [
+      { value: '90%', label: 'of 3 beauty MVPs shipped on-time', method: '[NEEDS INPUT: "on-time" against what committed dates, and what counted as the 10% that was not, per R2]' },
+    ],
+    artifacts: [
+      '[NEEDS INPUT: a redacted/reconstructed artifact from this engagement]',
     ],
   },
   {
