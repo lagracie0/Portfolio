@@ -79,8 +79,13 @@
   --weight-mono-regular: 400;
   --weight-mono-bold: 700;
 
-  /* Display — thesis line, page titles, case titles. Used sparingly. */
-  --text-display-1: clamp(2.75rem, 2rem + 3vw, 5.5rem);
+  /* Display — thesis line, page titles, case titles. Used sparingly.
+     display-1 was corrected after measuring the real thesis sentence at
+     1366px: the original clamp (44px-88px) rendered at ~73px and forced
+     the thesis into 3 lines, eating 294px of vertical space above a
+     first-screen matrix — the actual defect, not the grid being tall.
+     This clamp renders ~46px at 1366px, giving 2 lines at ~160px. */
+  --text-display-1: clamp(2.25rem, 1.5rem + 1.6vw, 3.25rem);
   --text-display-2: clamp(2rem, 1.6rem + 1.5vw, 3rem);
   --leading-display-1: 1.05;
   --leading-display-2: 1.15;
