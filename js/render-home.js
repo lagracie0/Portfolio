@@ -1,8 +1,9 @@
 import { DOMAINS, CAPABILITIES, CASES } from '../data/cases.js';
-import { buildMatrixModel, displayLabel, displayDateRange } from './matrix.js';
+import { buildMatrixModel, displayLabel, displayDateRange, CAPABILITY_TICK } from './matrix.js';
 
 const domainLabel = new Map(DOMAINS.map((d) => [d.slug, d.label]));
 const capabilityLabel = new Map(CAPABILITIES.map((c) => [c.slug, c.label]));
+const capabilityAtIndex = CAPABILITIES.map((c) => c.slug);
 
 function caseHref(caseObj) {
   return `work/${caseObj.slug}/`;
@@ -251,8 +252,15 @@ function buildMatrixView() {
               ...(dateText ? [el('span', { class: 'label-year', text: dateText })] : []),
             ]));
           } else {
-            // secondary segment: a tick, never a blank anonymous block
-            node.appendChild(el('span', { class: 'tick', text: '✓' }));
+            // Secondary segment: a capability tick, never a blank anonymous
+            // block — and never a checkmark, which reads as "verified"
+            // rather than "this case continues here." Names the actual
+            // capability(ies) this segment covers, visually subordinate to
+            // the label (smaller, muted — see .tick in home.css).
+            const tickText = Array.from({ length: seg.end - seg.start + 1 }, (_, k) =>
+              CAPABILITY_TICK[capabilityAtIndex[seg.start + k]]
+            ).join('·');
+            node.appendChild(el('span', { class: 'tick', text: tickText }));
           }
           barGroup.appendChild(node);
         });

@@ -292,6 +292,8 @@ button:focus-visible {
 
 .matrix .lane-cell {
   position: relative;
+  display: grid;
+  grid-template-columns: subgrid;
   border-right: var(--border-width) solid var(--border-color);
   border-bottom: var(--border-width) solid var(--border-color);
   min-height: 48px;
@@ -300,6 +302,7 @@ button:focus-visible {
 .bar-group {
   display: grid;
   grid-template-columns: subgrid;
+  grid-column: 1 / -1;
   height: 100%;
 }
 
@@ -331,10 +334,14 @@ button:focus-visible {
   margin-top: 2px;
 }
 
-/* Non-label segments carry a tick, not silence — a filled block is never
-   anonymous, regardless of how many segments a case breaks into. */
+/* Non-label segments carry a capability tick, not silence — a filled block
+   is never anonymous, regardless of how many segments a case breaks into.
+   Deliberately subordinate to the label: smaller, more muted, and a short
+   capability code rather than a checkmark, which reads as "verified"
+   instead of "this case continues here." */
 .bar-seg .tick {
-  opacity: 0.7;
+  opacity: 0.55;
+  font-size: 0.65rem;
   font-weight: var(--weight-mono-regular);
 }
 

@@ -17,6 +17,12 @@
 //   an invented one.
 // - priority is 'P0' | 'P1' per WRD §6.1, so the Phase 1 ship list is a filter
 //   on this field, not a manual call at build time.
+// - entityLine is an optional, explicit byline ("role, entity, context —
+//   dates") for a case where the engaging entity needs to be stated with
+//   precision distinct from `org` alone. Currently only on C1: the
+//   engagement was with the Accord Party specifically, not the Osun State
+//   Government, even though the party holds the governorship the case is
+//   about — that distinction matters enough to spell out, not leave to `org`.
 
 export const DOMAINS = [
   { slug: 'civic', label: 'Civic & elections' },
@@ -48,6 +54,11 @@ export const CASES = [
     slug: 'situation-room-osun-election',
     title: 'Situation Room supervision — Osun governorship election',
     org: 'Accord Party',
+    // The engaging entity is the Accord Party, not the Osun State
+    // Government — the party holds the governorship, but the engagement
+    // itself was with the party. Never name the state government as
+    // employer here, in prose, or in JSON-LD/OG tags later.
+    entityLine: 'Situation Room supervisor, Accord Party, Osun State governorship election — 20 July to 15 August 2026.',
     domain: 'civic',
     capabilities: ['live-ops', 'build-from-zero', 'stakeholder'],
     priority: 'P0',

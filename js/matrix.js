@@ -8,6 +8,20 @@ export function isNeedsInput(value) {
   return typeof value === 'string' && value.startsWith(NEEDS_INPUT_PREFIX);
 }
 
+// Short codes for the tick shown on a case's non-label segments. Not an
+// auto-truncation of the capability label — a checkmark reads as "verified"
+// and a truncated label can be ambiguous ("Ships it..."), so these are
+// deliberately chosen to be unambiguous at a glance and never confusable
+// with a confirmation glyph.
+export const CAPABILITY_TICK = {
+  'build-from-zero': 'BFZ',
+  stakeholder: 'STK',
+  delivery: 'DEL',
+  'live-ops': 'OPS',
+  research: 'RES',
+  'ships-it-herself': 'SHIP',
+};
+
 // Falls back to the case title (always real) when org isn't confirmed yet,
 // rather than ever rendering a raw "[NEEDS INPUT: ...]" string on the page.
 export function displayLabel(caseObj) {
