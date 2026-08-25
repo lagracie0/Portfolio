@@ -1,0 +1,239 @@
+/* Case page layout. Shares css/tokens.css and the header/footer patterns
+   from css/home.css (linked separately by the generated page) but owns its
+   own six-block narrative layout, RAG outcome badges, and the loud
+   NEEDS-INPUT flagging that keeps placeholder content from ever being
+   mistaken for real copy. */
+
+.case-header {
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.case-header .case-domain {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--color-line);
+  margin: 0 0 var(--space-3);
+}
+
+.case-header h1 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-display-2);
+  line-height: var(--leading-display-2);
+  margin: 0 0 var(--space-3);
+  text-wrap: balance;
+}
+
+.case-header .entity-line,
+.case-header .byline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-4);
+}
+
+.case-header .card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.case-header .card-tags li {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  padding: 2px var(--space-2);
+  border: var(--border-width) solid var(--color-line);
+  color: var(--color-line);
+}
+
+.case-body {
+  max-width: var(--measure-body);
+  padding: var(--space-6) var(--space-5);
+  margin: 0 auto;
+}
+
+.case-block {
+  margin-bottom: var(--space-7);
+}
+
+.case-block h2 {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--color-line);
+  border-bottom: var(--border-width) solid var(--border-color);
+  padding-bottom: var(--space-2);
+  margin: 0 0 var(--space-4);
+}
+
+.case-block p,
+.case-block li {
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  margin: 0 0 var(--space-3);
+}
+
+.case-block ul.plain-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.case-block ul.plain-list li {
+  padding-left: var(--space-5);
+  position: relative;
+}
+.case-block ul.plain-list li::before {
+  content: '—';
+  position: absolute;
+  left: 2px;
+  color: var(--color-line);
+}
+
+/* Outcome entries: text + RAG badge, same badge treatment as the matrix
+   specimen — colour never carries meaning alone (N5), always paired with
+   the uppercase text label. */
+.outcome-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: var(--border-width) dotted var(--color-line);
+}
+.outcome-item:last-child { border-bottom: none; }
+
+.rag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-mono);
+  font-weight: var(--weight-mono-bold);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--color-white);
+  width: fit-content;
+}
+.rag-badge.green { background: var(--color-green); }
+.rag-badge.amber { background: var(--color-amber); }
+.rag-badge.red { background: var(--color-red); }
+.rag-badge.unknown {
+  background: transparent;
+  color: var(--color-line);
+  border: var(--border-width) dashed var(--color-line);
+}
+
+/* Metrics: value + label + a mandatory method note, per R2 — never a bare
+   percentage. */
+.metric {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.metric .metric-value {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-mono-bold);
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  grid-row: 1 / 3;
+  align-self: start;
+}
+.metric .metric-label {
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+}
+.metric .metric-method {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-line);
+  grid-column: 2;
+}
+
+/* NEEDS-INPUT: loud, unmissable, never confusable with real copy. This is a
+   dev/review affordance, not a design choice for shipped content — a P0
+   case with any of these present is refused by the build script entirely
+   (see scripts/build-case-pages.mjs), so this only ever appears on P1
+   pages that are explicitly still drafts. */
+.needs-input {
+  display: inline-block;
+  background: #FFF3B0;
+  color: #7A1F00;
+  border: 2px dashed #C0392B;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: var(--weight-mono-bold);
+  padding: 2px 8px;
+  margin: 2px 0;
+}
+.needs-input::before {
+  content: '⚑ NEEDS INPUT — ';
+  font-weight: var(--weight-mono-bold);
+}
+
+.draft-banner {
+  background: #FFF3B0;
+  color: #7A1F00;
+  border-bottom: 3px dashed #C0392B;
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: var(--weight-mono-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  text-align: center;
+}
+
+.artifact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.artifact-list li {
+  border: var(--border-width) solid var(--color-line);
+  padding: var(--space-4);
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+}
+
+.case-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-top: var(--border-width) solid var(--border-color);
+  flex-wrap: wrap;
+}
+.case-nav a {
+  text-decoration: none;
+  color: var(--color-ink);
+  max-width: 45%;
+}
+.case-nav .nav-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--color-line);
+  margin-bottom: var(--space-1);
+}
+.case-nav .nav-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+}
+.case-nav .next-case { text-align: right; margin-left: auto; }

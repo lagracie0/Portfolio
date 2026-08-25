@@ -23,6 +23,15 @@
 //   engagement was with the Accord Party specifically, not the Osun State
 //   Government, even though the party holds the governorship the case is
 //   about — that distinction matters enough to spell out, not leave to `org`.
+// - situation[] and missing[] hold one entry per sentence/claim (matching the
+//   pattern built[]/decisions[]/outcome[] already use), not one long string —
+//   so a real, traceable sentence and an open [NEEDS INPUT] question can sit
+//   side by side in the same block without one contaminating the other. Only
+//   C1 and C3 use this shape so far (see the Step 4/5 review); the rest are
+//   still single-entry placeholders pending their own discovery pass.
+// - Every [NEEDS INPUT: ...] string IS the open question, not prose with a
+//   question attached — never write a real-sounding sentence and footnote
+//   it. A field is either fully traceable (state it) or fully open (ask it).
 
 export const DOMAINS = [
   { slug: 'civic', label: 'Civic & elections' },
@@ -64,24 +73,42 @@ export const CASES = [
     priority: 'P0',
     dateStart: '2026-07-20',
     dateEnd: '2026-08-15',
+    // Structural placeholder content, drafted for Step 5 template proportions
+    // (not final copy). Real facts below trace to entity/dates/title (already
+    // confirmed) and to Ayomide's own written answers to a discovery Q&A on
+    // this case; everything else is an open, specific question, per rule R1.
+    // This page also needs her sign-off before publication per R3.
     situation: [
-      '[NEEDS INPUT: 2–3 sentences on what existed in the Situation Room when she arrived — per WRD R3, keep this operational: incident intake, agent coordination, escalation, reporting against the fixed election date. No claim about the election or its outcome, no detail that could identify individual agents.]',
+      'When she arrived, the office space and basic setup already existed, alongside the fixed election dates (20 July to 15 August 2026).',
+      'Once operating, reports reached her through several channels — phone, media monitoring, and an existing reporting line.',
+      '[NEEDS INPUT: Was a rota, an escalation process, or an agent roster already in place before she arrived, or did none of that exist yet?]',
     ],
     missing: [
-      '[NEEDS INPUT: the specific structural absence — e.g. no incident intake process, no escalation ladder, no reporting cadence — framed operationally per R3]',
+      '[NEEDS INPUT: What specific structure was missing at the start — a triage step, a shared incident log, an escalation ladder, something else? Name the actual gap.]',
+      '[NEEDS INPUT: Was a reporting cadence to the Accord Party leadership already set before she arrived, or did she have to establish one?]',
     ],
     built: [
-      '[NEEDS INPUT: the structures introduced — e.g. incident log format, escalation ladder, reporting cadence — named concretely]',
+      '[NEEDS INPUT: What did she set up to triage the incoming phone, media, and reporting-line traffic into one coherent picture?]',
+      '[NEEDS INPUT: What structure did she introduce for escalating contradictory or unverified reports?]',
+      '[NEEDS INPUT: How did she organise the 70-plus agents and co-supervisors — a roster, a shift structure, a geographic split?]',
+      '[NEEDS INPUT: What format or cadence did she put in place for reporting up to the Accord Party leadership?]',
+      '[NEEDS INPUT: What changed about handling the internet, software, or rural-area access problems — a workaround, a fallback channel, a different tool?]',
     ],
     decisions: [
-      '[NEEDS INPUT: 2–3 real decision forks and what was traded off, framed operationally per R3]',
+      '[NEEDS INPUT: The worst moment involved contradictory reports and unverified information arriving fast — what did she decide, and what did that choice cost or rule out?]',
+      '[NEEDS INPUT: The software, internet, and rural-area access broke or nearly broke mid-operation — what did she change, and what was given up to make that change work?]',
+      '[NEEDS INPUT: Coordinating 70-plus agents and co-supervisors required a structural choice — centralised control vs. delegated authority, geography vs. shift — which way did she go, and what did that choice sacrifice?]',
     ],
     outcome: [
-      { text: '[NEEDS INPUT: outcome statement, framed operationally per R3. This page requires Ayomide\'s sign-off before publication.]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: How was the contradictory-reports moment ultimately resolved, and what was the result?]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: Once the software/internet/rural-access problems were addressed, what was the actual outcome — full recovery, partial, lasting impact?]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
-    metrics: [],
+    metrics: [
+      { value: '[NEEDS INPUT: a real number — e.g. agents coordinated, incidents logged, reports processed, response time]', label: '[NEEDS INPUT: what this number would represent]', method: '[NEEDS INPUT: how it was counted and over what period]' },
+    ],
     artifacts: [
-      '[NEEDS INPUT: a redacted/reconstructed artifact — e.g. incident log template, escalation ladder diagram — with no material that could identify individual agents]',
+      '[NEEDS INPUT: a redacted/reconstructed artifact showing how multi-channel reports were logged or triaged — no material that could identify individual agents]',
+      '[NEEDS INPUT: a redacted/reconstructed artifact showing the 70-plus agent/co-supervisor coordination structure — e.g. a roster or map, again with no identifying detail]',
     ],
   },
   {
@@ -122,24 +149,41 @@ export const CASES = [
     priority: 'P0',
     dateStart: '[NEEDS INPUT: engagement start date]',
     dateEnd: '[NEEDS INPUT: engagement end date]',
+    // Structural placeholder content, drafted for Step 5 template proportions
+    // (not final copy). No discovery Q&A has been done for this case yet —
+    // unlike C1, nothing here beyond title/domain/capabilities is confirmed,
+    // so every claim is an open, specific question rather than a guess.
     situation: [
-      '[NEEDS INPUT: 2–3 sentences on what existed when she arrived, from scoping through post-launch review]',
+      '[NEEDS INPUT: When she joined, did Lodgr already have a product built, or was this genuinely a zero-to-one build? What existed — a concept, a prototype, paying customers?]',
+      '[NEEDS INPUT: What kind of organisation was Lodgr — a startup she joined, a client engagement, something else — and roughly how large was the team?]',
+      '[NEEDS INPUT: What was the state of requirements or product direction before she started scoping?]',
     ],
     missing: [
-      '[NEEDS INPUT: the specific structural absence]',
+      '[NEEDS INPUT: What specific process was absent before she arrived — no requirements documentation, no launch plan, no post-launch review process?]',
+      '[NEEDS INPUT: Was there an existing PM function at Lodgr before her, or was this role newly created?]',
     ],
     built: [
-      '[NEEDS INPUT: the structures introduced — e.g. requirements process, launch plan, post-launch review format]',
+      '[NEEDS INPUT: What requirements-gathering process did she put in place for scoping the booking platform?]',
+      '[NEEDS INPUT: What did the actual delivery process look like — sprints, a roadmap, a release cadence — and did she design it?]',
+      '[NEEDS INPUT: What research did she conduct, and what method — user interviews, competitive analysis, usability testing?]',
+      '[NEEDS INPUT: What did the launch process consist of, and what changed for post-launch review specifically?]',
+      '[NEEDS INPUT: Was there a specific documentation or handoff structure she introduced — a requirements brief, a spec template?]',
     ],
     decisions: [
-      '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
+      '[NEEDS INPUT: What was a real scope trade-off she made — a feature cut, a timeline compromise, a build-vs-buy call — and what was given up?]',
+      '[NEEDS INPUT: Did she make a call between speed to launch and thoroughness of testing or research? What did that cost?]',
+      '[NEEDS INPUT: Was there a disagreement with stakeholders or the team about direction, and how was it resolved?]',
     ],
     outcome: [
-      { text: '[NEEDS INPUT: outcome statement]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: What was the actual result of the launch — on time, delayed, and against what commitment?]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: What did the post-launch review find, and what happened as a result of it?]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
-    metrics: [],
+    metrics: [
+      { value: '[NEEDS INPUT: a real number from this engagement — e.g. time to launch, user adoption, retention, requirements delivered]', label: '[NEEDS INPUT: what this number would represent]', method: '[NEEDS INPUT: how it was counted and over what period]' },
+    ],
     artifacts: [
-      '[NEEDS INPUT: a redacted/reconstructed artifact — e.g. requirements brief, launch checklist]',
+      '[NEEDS INPUT: a redacted/reconstructed requirements brief or scoping document from this engagement]',
+      '[NEEDS INPUT: a redacted/reconstructed launch checklist or post-launch review template]',
     ],
   },
   {

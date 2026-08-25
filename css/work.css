@@ -1,0 +1,90 @@
+/* /work — listing page layout. Reuses .chip, .filters, .card-groups,
+   .case-card from home.css (linked alongside this file) for the filter
+   controls and cards themselves; this file owns the page header and the
+   active-filter summary row (F4). */
+
+.work-header {
+  padding: var(--space-6) var(--space-5) var(--space-4);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+.work-header h1 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-display-2);
+  line-height: var(--leading-display-2);
+  margin: 0 0 var(--space-2);
+}
+.work-header p {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--color-line);
+  margin: 0;
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+.active-filters .active-filters-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--color-line);
+}
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+  border: none;
+  cursor: pointer;
+}
+.filter-pill .remove-x {
+  font-size: 0.9em;
+}
+.clear-all {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  background: none;
+  border: none;
+  color: var(--color-line);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: var(--space-1) 0;
+}
+
+.work-list {
+  padding: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+  align-content: start;
+}
+.work-list .case-card { margin-bottom: 0; }
+
+.work-empty {
+  padding: var(--space-6) var(--space-5);
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-line);
+  max-width: 60ch;
+}
+.work-empty .adjacent-list {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.85rem;
+  margin-top: var(--space-3);
+}
