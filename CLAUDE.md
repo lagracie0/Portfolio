@@ -26,6 +26,12 @@ That means: explain your reasoning, never assume she'll catch a problem, and tel
 
 **Push back when the spec would produce a bad outcome.** Don't implement something just because it was asked for if it breaks accessibility, security, or the stated design intent — say so first.
 
+**State the working directory at the start of every session, and never write outside it.** This project's files live under `~/Documents/ayomide-portfolio` only. No scratch files in `/tmp`, no writing into any other project folder.
+
+**Never report a commit that wasn't actually made.** After every `git commit`, run `git log --oneline -1` and paste the real output. A claimed hash that doesn't exist is a critical failure, not a rounding error.
+
+**Push after every commit, once a remote exists.** Until then, say plainly that a commit is local-only and hasn't shipped anywhere.
+
 ## Content integrity (WRD R1–R4)
 
 - **R1 — No invented facts.** Every claim traces to the CV, the Situation Room engagement, or Ayomide's written input.
@@ -47,9 +53,9 @@ Follow this for anything beyond a one-line change.
 ## Constraints (from the WRD)
 
 - Plain HTML, CSS, vanilla JS ES modules. No React, no Tailwind, no bundler, no runtime dependencies.
-- Node is used only for the static page-generation script (Step 5).
-- All case data lives in `data/cases.js` — adding an eleventh case must never require touching layout code.
-- Deploy target: GitHub Pages or Cloudflare Pages.
+- Node is used only for the static page-generation script (Step 5) — case pages are generated at build time, not client-routed.
+- All case data lives in `data/cases.js` — adding a case must never require touching layout code.
+- Deploy target: GitHub Pages. Do not enable Pages until the six P0 cases are written and the audit pass (Step 7) is clean.
 
 ## Style
 
