@@ -4,8 +4,14 @@
 
 const NEEDS_INPUT_PREFIX = '[NEEDS INPUT';
 
+// Deliberately checks anywhere in the string, not just at the start.
+// Content should never embed a marker mid-sentence (the convention is one
+// array entry per real sentence OR per open question, never both in one
+// string), but this is the guard's last line of defence if that convention
+// slips — a mid-string marker still gets caught here even if it can't be
+// cleanly extracted for display.
 export function isNeedsInput(value) {
-  return typeof value === 'string' && value.startsWith(NEEDS_INPUT_PREFIX);
+  return typeof value === 'string' && value.includes(NEEDS_INPUT_PREFIX);
 }
 
 // Short codes for the tick shown on a case's non-label segments. Not an

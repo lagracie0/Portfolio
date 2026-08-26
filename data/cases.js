@@ -67,48 +67,76 @@ export const CASES = [
     // Government — the party holds the governorship, but the engagement
     // itself was with the party. Never name the state government as
     // employer here, in prose, or in JSON-LD/OG tags later.
-    entityLine: 'Situation Room supervisor, Accord Party, Osun State governorship election — 20 July to 15 August 2026.',
+    entityLine: 'Supervisor, Situation Room, Accord Party — Osun State governorship election, 20 July to 15 August 2026.',
     domain: 'civic',
-    capabilities: ['live-ops', 'build-from-zero', 'stakeholder'],
+    // build-from-zero removed and research added, per Ayomide's explicit
+    // ruling: the command structure, escalation ladder and log fields were
+    // set by the Situation Room Lead before supervisors took over, so
+    // build-from-zero would claim design work that belongs to someone
+    // else — the same documents that would prove that also disprove the
+    // tag. research is added because collation-readiness testing and the
+    // standing reporting cadence to the Lead both support it. This flips
+    // the WRD/data mismatch on this domain: Civic x Research is now
+    // resolved (matches WRD §4.1), but Civic x Build-from-zero is now open
+    // again, since Civic has only this one case and it no longer carries
+    // that tag — see tasks/todo.md. If built[4] below comes back with a
+    // real structural contribution she made beyond the briefing, that
+    // could reopen the build-from-zero question; until then, it stays off.
+    capabilities: ['stakeholder', 'live-ops', 'research'],
     priority: 'P0',
     dateStart: '2026-07-20',
     dateEnd: '2026-08-15',
-    // Structural placeholder content, drafted for Step 5 template proportions
-    // (not final copy). Real facts below trace to entity/dates/title (already
-    // confirmed) and to Ayomide's own written answers to a discovery Q&A on
-    // this case; everything else is an open, specific question, per rule R1.
-    // This page also needs her sign-off before publication per R3.
+    // Real content below, from Ayomide's own written account. Everything not
+    // explicitly stated by her is a literal open question, per rule R1. Per
+    // her instruction: no colleague names (roles only), no reproduction of
+    // the Lead's briefing as a site artifact, and nothing operationally
+    // sensitive (security liaison arrangements, contact lists, anything
+    // that maps the agent network by location). This page still needs her
+    // sign-off before publication per R3, and the build guard independently
+    // blocks it while open items remain below.
     situation: [
-      'When she arrived, the office space and basic setup already existed, alongside the fixed election dates (20 July to 15 August 2026).',
-      'Once operating, reports reached her through several channels — phone, media monitoring, and an existing reporting line.',
-      '[NEEDS INPUT: Was a rota, an escalation process, or an agent roster already in place before she arrived, or did none of that exist yet?]',
+      'The Situation Room ran as a designed operation with a defined command structure: a Situation Room Lead, supervisors over LGA desks, desk officers taking field reports, and separate technical, logistics, media, security and incident functions, backed by a standby support group.',
+      'Reports moved along a fixed chain from polling-unit agents through ward and LGA leads to the desk, and issues were classified Green, Amber or Red according to severity.',
+      'Some issues during the operation were escalated beyond the desk to the media, security and standby support functions.',
+      'She supervised a cluster of LGA desks inside that structure across a four-week run-up and through election day.',
     ],
     missing: [
-      '[NEEDS INPUT: What specific structure was missing at the start — a triage step, a shared incident log, an escalation ladder, something else? Name the actual gap.]',
-      '[NEEDS INPUT: Was a reporting cadence to the Accord Party leadership already set before she arrived, or did she have to establish one?]',
+      'The framework existed on paper before the field network did.',
+      'At the point supervisors took over, polling units did not yet have verified contacts, collation had not been tested end to end against live result uploads, and the fallback path for a failure of the app or the internet had been specified but not proven.',
+      'The gap was between a designed system and one that had been exercised.',
     ],
     built: [
-      '[NEEDS INPUT: What did she set up to triage the incoming phone, media, and reporting-line traffic into one coherent picture?]',
-      '[NEEDS INPUT: What structure did she introduce for escalating contradictory or unverified reports?]',
-      '[NEEDS INPUT: How did she organise the 70-plus agents and co-supervisors — a roster, a shift structure, a geographic split?]',
-      '[NEEDS INPUT: What format or cadence did she put in place for reporting up to the Accord Party leadership?]',
-      '[NEEDS INPUT: What changed about handling the internet, software, or rural-area access problems — a workaround, a fallback channel, a different tool?]',
+      'A verified contact network across assigned LGAs — two reliable contacts per polling unit and ward, each with a backup number, so a single unreachable agent never blacked out a unit.',
+      'Desk-level reporting discipline: every issue logged with time, LGA, ward, polling unit, source, verification status, action owner and current status, so a report could be picked up mid-shift by someone who had not taken the call.',
+      'Paired support supervisors onto documentation oversight at polling-unit and ward level, briefed individually rather than collectively, so accountability for result documentation sat with a named person per area.',
+      'Ran collation and reporting readiness tests ahead of go-live, including integration against live result uploads, so failures surfaced before election day rather than during it.',
+      '[NEEDS INPUT: What did she personally set up for her own desks that wasn\'t in the briefing — a shift handover format, a check-in rhythm, a triage rule of her own?]',
     ],
+    // Each decision is two entries — the real setup, then the open question
+    // about the actual trade-off — never one string mixing both. A NEEDS
+    // INPUT marker embedded mid-sentence isn't reliably detectable by the
+    // build guard or renderable as a flagged placeholder; this bit here
+    // once already (see js/matrix.js's isNeedsInput and this file's own
+    // history) and is worth not repeating.
     decisions: [
-      '[NEEDS INPUT: The worst moment involved contradictory reports and unverified information arriving fast — what did she decide, and what did that choice cost or rule out?]',
-      '[NEEDS INPUT: The software, internet, and rural-area access broke or nearly broke mid-operation — what did she change, and what was given up to make that change work?]',
-      '[NEEDS INPUT: Coordinating 70-plus agents and co-supervisors required a structural choice — centralised control vs. delegated authority, geography vs. shift — which way did she go, and what did that choice sacrifice?]',
+      'Verification before escalation. The room\'s standing rule was that no rumour was treated as fact until source and location were confirmed — but the same rule required Amber and Red issues to move up immediately, and those pull in opposite directions when something serious arrives unverified.',
+      '[NEEDS INPUT: Describe one time this tension actually played out — what came in, what did she do, and what did she give up by choosing it: speed or certainty?]',
+      'Contradictory reports arrived from the same location, from two different agents with different accounts.',
+      '[NEEDS INPUT: Did she hold for a third source, weight one agent over the other, or escalate both and let the incident desk resolve it? What did that cost?]',
+      'Degraded conditions in rural areas were a known risk — connectivity, app access and rural reach — and the room tested a backup phone and messaging path before go-live. A manual channel served as the backup for the infrastructure when it failed.',
+      '[NEEDS INPUT: What specifically failed on the day — connectivity, the app, or something else — and did the reporting interval change as a result of switching to the manual channel?]',
     ],
     outcome: [
-      { text: '[NEEDS INPUT: How was the contradictory-reports moment ultimately resolved, and what was the result?]', status: '[NEEDS INPUT: green/amber/red]' },
-      { text: '[NEEDS INPUT: Once the software/internet/rural-access problems were addressed, what was the actual outcome — full recovery, partial, lasting impact?]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: How many polling units and LGAs did the cluster cover, how many contacts were verified against the target, and what proportion reported on schedule? Any countable figure, with what it measured and over what period.]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
     metrics: [
-      { value: '[NEEDS INPUT: a real number — e.g. agents coordinated, incidents logged, reports processed, response time]', label: '[NEEDS INPUT: what this number would represent]', method: '[NEEDS INPUT: how it was counted and over what period]' },
+      { value: '[NEEDS INPUT: number of polling units and LGAs covered]', label: '[NEEDS INPUT: coverage — polling units / LGAs]', method: '[NEEDS INPUT: how counted, over what period]' },
+      { value: '[NEEDS INPUT: number of contacts verified against target]', label: '[NEEDS INPUT: contact-verification rate]', method: '[NEEDS INPUT: how counted, over what period]' },
+      { value: '[NEEDS INPUT: proportion reporting on schedule]', label: '[NEEDS INPUT: on-schedule reporting rate]', method: '[NEEDS INPUT: how counted, over what period]' },
     ],
     artifacts: [
-      '[NEEDS INPUT: a redacted/reconstructed artifact showing how multi-channel reports were logged or triaged — no material that could identify individual agents]',
-      '[NEEDS INPUT: a redacted/reconstructed artifact showing the 70-plus agent/co-supervisor coordination structure — e.g. a roster or map, again with no identifying detail]',
+      '[NEEDS INPUT: A redacted incident log showing the mandatory fields — time, LGA, ward, polling unit, source, verification status, action owner, status — with real entries removed.]',
+      '[NEEDS INPUT: The contact-coverage tracker structure, with names and numbers stripped — structure only, no identities, no live contacts.]',
     ],
   },
   {
@@ -358,7 +386,8 @@ export const CASES = [
       '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      'Market-trend and feedback analysis work [NEEDS INPUT: what was analysed, what method, and how findings fed back into Clea/Pushbio decisions]',
+      'Market-trend and feedback analysis work.',
+      '[NEEDS INPUT: What was analysed, what method was used, and how did findings feed back into Clea/Pushbio decisions?]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
@@ -394,7 +423,8 @@ export const CASES = [
       '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      'User research initiatives that directly shaped the product roadmap [NEEDS INPUT: specific method — surveys, interviews, usability testing — and cadence]',
+      'User research initiatives that directly shaped the product roadmap.',
+      '[NEEDS INPUT: What method — surveys, interviews, usability testing — and what cadence?]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
