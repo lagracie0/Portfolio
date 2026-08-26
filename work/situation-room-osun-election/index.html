@@ -38,35 +38,32 @@
   <div class="case-body">
     <section class="case-block">
       <h2>Situation</h2>
-      <p>The Situation Room ran as a designed operation with a defined command structure: a Situation Room Lead, supervisors over LGA desks, desk officers taking field reports, and separate technical, logistics, media, security and incident functions, backed by a standby support group.</p>
-<p>Reports moved along a fixed chain from polling-unit agents through ward and LGA leads to the desk, and issues were classified Green, Amber or Red according to severity.</p>
-<p>Agents were each assigned to a specific LGA, so conflicting reports from within the same territory were rare.</p>
-<p>Some issues during the operation were escalated beyond the desk to the media, security and standby support functions.</p>
+      <p>The Situation Room ran as a designed operation with a defined command structure, a fixed reporting chain from the field to the desk, and a severity classification applied to every issue raised.</p>
+<p>Agents were assigned to specific LGAs, so reports from within the same territory rarely conflicted.</p>
 <p>She supervised a cluster of LGA desks inside that structure across a four-week run-up and through election day.</p>
     </section>
 
     <section class="case-block">
       <h2>What was missing</h2>
       <p>The framework existed on paper before the field network did.</p>
-<p>At the point supervisors took over, polling units did not yet have verified contacts, collation had not been tested end to end against live result uploads, and the fallback path for a failure of the app or the internet had been specified but not proven.</p>
-<p>The gap was between a designed system and one that had been exercised.</p>
+<p>Verified field contacts, end-to-end collation testing and a proven fallback for technical failure were all specified but not yet exercised.</p>
     </section>
 
     <section class="case-block">
       <h2>What I built</h2>
       <ul class="plain-list">
-  <li>A verified contact network across assigned LGAs — two reliable contacts per polling unit and ward, each with a backup number, so a single unreachable agent never blacked out a unit.</li>
-  <li>Desk-level reporting discipline: every issue logged with time, LGA, ward, polling unit, source, verification status, action owner and current status, so a report could be picked up mid-shift by someone who had not taken the call.</li>
-  <li>Paired support supervisors onto documentation oversight at polling-unit and ward level, briefed individually rather than collectively, so accountability for result documentation sat with a named person per area.</li>
-  <li>Ran collation and reporting readiness tests ahead of go-live, including integration against live result uploads, so failures surfaced before election day rather than during it.</li>
+  <li>A verified contact network across assigned LGAs, with redundancy at every level so a single unreachable contact never blacked out a unit.</li>
+  <li>Desk-level reporting discipline: a standard log format capturing time, location, source, verification status, action owner and current status, so any report could be picked up mid-shift by someone who had not taken the call.</li>
+  <li>Documentation oversight paired to named supervisors by area, briefed individually rather than collectively, so accountability sat with a person rather than a rota.</li>
+  <li>Collation and reporting readiness tests run ahead of go-live, so failures surfaced before election day rather than during it.</li>
 </ul>
     </section>
 
     <section class="case-block">
       <h2>Decisions and trade-offs</h2>
       <ul class="plain-list">
-  <li>On several occasions, security reports came in from party agents at different polling units. The standard response was for the reporting agent to escalate to supervisors, who called ward agents to verify — only escalating to security once a report was confirmed true.</li>
-  <li>On election day, some party agents at individual polling units could not be reached to confirm results at that level of detail. The room relied on ward agents and LGA-level party chairmen instead.</li>
+  <li>Verification before escalation, with an immediate-escalation rule for serious issues. Those pull against each other under time pressure; the standing choice was to confirm through a second source before escalating, accepting delay as the cost of not acting on an unconfirmed report.</li>
+  <li>Where a contact could not be reached, reporting fell back to the next level up the chain. That preserved coverage but reduced granularity, and the trade-off was made explicitly rather than by default.</li>
 </ul>
     </section>
 

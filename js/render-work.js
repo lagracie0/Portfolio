@@ -1,8 +1,33 @@
 import { DOMAINS, CAPABILITIES, CASES } from '../data/cases.js';
-import { displayLabel, displayDateRange } from './matrix.js';
+import { displayLabel, displayDateRange, isNeedsInput } from './matrix.js';
 
 const domainBySlug = new Map(DOMAINS.map((d) => [d.slug, d]));
 const capabilityBySlug = new Map(CAPABILITIES.map((c) => [c.slug, c]));
+
+// P0 first, then most recent first. "Recent" uses dateEnd if it's real,
+// falling back to dateStart, falling back to last (cases with no real date
+// at all sort to the bottom of their priority tier, not scattered through
+// it). Date strings compare fine lexicographically even at mixed precision
+// (year-only vs. year-month-day) for this purpose — exact day-level
+// ordering isn't the point, keeping P0 work up front and dated work ahead
+// of undated work is.
+function recencyKey(caseObj) {
+  const end = isNeedsInput(caseObj.dateEnd) ? null : caseObj.dateEnd;
+  const start = isNeedsInput(caseObj.dateStart) ? null : caseObj.dateStart;
+  return end || start || null;
+}
+
+function orderForWork(cases) {
+  return [...cases].sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority === 'P0' ? -1 : 1;
+    const ka = recencyKey(a);
+    const kb = recencyKey(b);
+    if (ka === null && kb === null) return 0;
+    if (ka === null) return 1;
+    if (kb === null) return -1;
+    return kb.localeCompare(ka);
+  });
+}
 
 function el(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -37,10 +62,10 @@ function writeStateToUrl(state, replace) {
 }
 
 function matchingCases(state) {
-  return CASES.filter((c) =>
+  return orderForWork(CASES.filter((c) =>
     (!state.domain || c.domain === state.domain) &&
     (!state.capability || c.capabilities.includes(state.capability))
-  );
+  ));
 }
 
 function buildCard(caseObj) {

@@ -81,18 +81,16 @@ export function computeSegments(caseObj, capabilityIndex) {
     }
   }
 
-  // The widest segment carries the label; ties go to the first (leftmost)
-  // segment, so every other filled block still gets a tick mark rather than
-  // sitting anonymous.
-  let labelIndex = 0;
-  let labelWidth = -1;
-  segments.forEach((seg, i) => {
-    const width = seg.end - seg.start + 1;
-    if (width > labelWidth) {
-      labelWidth = width;
-      labelIndex = i;
-    }
-  });
+  // The leftmost segment carries the label by default, so the eye lands in
+  // the same place on every row. It only loses the label to a genuinely
+  // wider segment elsewhere — one more than one column-width wider — since
+  // a segment only marginally wider than the leftmost one isn't worth
+  // breaking that consistency for. (Ties, and near-ties within one column,
+  // stay leftmost.)
+  const widths = segments.map((seg) => seg.end - seg.start + 1);
+  const leftmostWidth = widths[0];
+  const maxWidth = Math.max(...widths);
+  const labelIndex = maxWidth - leftmostWidth > 1 ? widths.indexOf(maxWidth) : 0;
   segments.forEach((seg, i) => { seg.hasLabel = i === labelIndex; });
 
   return {

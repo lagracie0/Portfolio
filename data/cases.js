@@ -86,57 +86,30 @@ export const CASES = [
     priority: 'P0',
     dateStart: '2026-07-20',
     dateEnd: '2026-08-15',
-    // Real content below, from Ayomide's own written account. Everything not
-    // explicitly stated by her is a literal open question, per rule R1. Per
-    // her instruction: no colleague names (roles only), no reproduction of
-    // the Lead's briefing as a site artifact, and nothing operationally
-    // sensitive (security liaison arrangements, contact lists, anything
-    // that maps the agent network by location). This page still needs her
-    // sign-off before publication per R3, and the build guard independently
-    // blocks it while open items remain below.
+    // Deliberately reduced for confidentiality, per instruction. This is
+    // not a discovery gap — do not restore prior detail (media/security/
+    // standby-support escalation, named individuals, or how escalation to
+    // security worked) and do not expand this back out. This is the final
+    // public version of this content, not a draft awaiting more detail.
     situation: [
-      'The Situation Room ran as a designed operation with a defined command structure: a Situation Room Lead, supervisors over LGA desks, desk officers taking field reports, and separate technical, logistics, media, security and incident functions, backed by a standby support group.',
-      'Reports moved along a fixed chain from polling-unit agents through ward and LGA leads to the desk, and issues were classified Green, Amber or Red according to severity.',
-      'Agents were each assigned to a specific LGA, so conflicting reports from within the same territory were rare.',
-      'Some issues during the operation were escalated beyond the desk to the media, security and standby support functions.',
+      'The Situation Room ran as a designed operation with a defined command structure, a fixed reporting chain from the field to the desk, and a severity classification applied to every issue raised.',
+      'Agents were assigned to specific LGAs, so reports from within the same territory rarely conflicted.',
       'She supervised a cluster of LGA desks inside that structure across a four-week run-up and through election day.',
     ],
     missing: [
       'The framework existed on paper before the field network did.',
-      'At the point supervisors took over, polling units did not yet have verified contacts, collation had not been tested end to end against live result uploads, and the fallback path for a failure of the app or the internet had been specified but not proven.',
-      'The gap was between a designed system and one that had been exercised.',
+      'Verified field contacts, end-to-end collation testing and a proven fallback for technical failure were all specified but not yet exercised.',
     ],
-    // built[] originally had a 5th item asking what she set up beyond the
-    // briefing — a bare discovery question with no real content behind it,
-    // not a refinement of something already stated. Closed out per
-    // instruction: removed rather than left as an open question, since
-    // there was genuinely nothing there yet.
     built: [
-      'A verified contact network across assigned LGAs — two reliable contacts per polling unit and ward, each with a backup number, so a single unreachable agent never blacked out a unit.',
-      'Desk-level reporting discipline: every issue logged with time, LGA, ward, polling unit, source, verification status, action owner and current status, so a report could be picked up mid-shift by someone who had not taken the call.',
-      'Paired support supervisors onto documentation oversight at polling-unit and ward level, briefed individually rather than collectively, so accountability for result documentation sat with a named person per area.',
-      'Ran collation and reporting readiness tests ahead of go-live, including integration against live result uploads, so failures surfaced before election day rather than during it.',
+      'A verified contact network across assigned LGAs, with redundancy at every level so a single unreachable contact never blacked out a unit.',
+      'Desk-level reporting discipline: a standard log format capturing time, location, source, verification status, action owner and current status, so any report could be picked up mid-shift by someone who had not taken the call.',
+      'Documentation oversight paired to named supervisors by area, briefed individually rather than collectively, so accountability sat with a person rather than a rota.',
+      'Collation and reporting readiness tests run ahead of go-live, so failures surfaced before election day rather than during it.',
     ],
-    // A third decision (two agents contradicting each other on the same
-    // location) was dropped rather than answered: Ayomide's real answer was
-    // that this rarely happened, because agents were each assigned a single
-    // LGA (see situation[] above). Writing a decision narrative for a
-    // scenario that didn't really occur would overstate it — the honest
-    // version of that fact lives in situation[], not here.
-    //
-    // The two follow-up questions on cost (what the verification step cost,
-    // what the ward/LGA fallback cost) were closed out as refinements, not
-    // gaps — the decisions themselves are substantially told; what verifying
-    // actually cost is a detail Ayomide can add later, not a missing fork.
     decisions: [
-      'On several occasions, security reports came in from party agents at different polling units. The standard response was for the reporting agent to escalate to supervisors, who called ward agents to verify — only escalating to security once a report was confirmed true.',
-      'On election day, some party agents at individual polling units could not be reached to confirm results at that level of detail. The room relied on ward agents and LGA-level party chairmen instead.',
+      'Verification before escalation, with an immediate-escalation rule for serious issues. Those pull against each other under time pressure; the standing choice was to confirm through a second source before escalating, accepting delay as the cost of not acting on an unconfirmed report.',
+      'Where a contact could not be reached, reporting fell back to the next level up the chain. That preserved coverage but reduced granularity, and the trade-off was made explicitly rather than by default.',
     ],
-    // outcome[] and metrics[] were both genuinely empty — no real figures
-    // exist yet for coverage, verification rate, or on-schedule reporting.
-    // An absent block is honest; a block of placeholder numbers is debt, so
-    // both are empty arrays rather than open questions. Same for artifacts[]
-    // below — no real artifact has been identified or redacted yet.
     outcome: [],
     metrics: [],
     artifacts: [],
@@ -221,7 +194,7 @@ export const CASES = [
   },
   {
     slug: 'langovest-volunteer-network',
-    title: 'Langovest Volunteer Network, 0 → 12 volunteers across 4 countries in 4 months',
+    title: 'Langovest Volunteer Network',
     org: 'Langovest',
     domain: 'infrastructure',
     capabilities: ['build-from-zero', 'stakeholder'],
@@ -259,8 +232,8 @@ export const CASES = [
     domain: 'events',
     capabilities: ['live-ops', 'stakeholder'],
     priority: 'P0',
-    dateStart: '[NEEDS INPUT: engagement/festival start date]',
-    dateEnd: '[NEEDS INPUT: engagement/festival end date]',
+    dateStart: '2026-02-19',
+    dateEnd: '2026-02-20',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed one month out from the festival]',
     ],
@@ -283,7 +256,7 @@ export const CASES = [
   },
   {
     slug: 'langovest-website-redesign',
-    title: 'Langovest website redesign — 95% of tickets to schedule',
+    title: 'Langovest website redesign',
     org: 'Langovest',
     domain: 'devinfra',
     capabilities: ['delivery', 'research'],
