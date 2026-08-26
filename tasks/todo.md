@@ -38,7 +38,7 @@ Every case's domain + capabilities were checked against every filled cell in the
 
 Ayomide flagged that `stakeholder` appears in 6 of 8 distinct capability-sets in the data — a tag that common to nearly everything proves nothing on its own. Two options on the table, neither applied yet:
 
-- **Split it** into two more discriminating capabilities — vendor/contract management vs. partner/sponsor development. Her own examples: the Flutterwave sponsorship pipeline (C8) is partner/sponsor development; a venue contract (plausibly C5, Osun Tech Festival) is vendor/contract management. This is a change to the `CAPABILITIES` axis itself (6 columns → 7), which means redoing the column-order and segmentation analysis from Step-3-prep — a real amount of rework, and accurate per-case reclassification of the other stakeholder-tagged cases (C1, C2, C4, C7) can't be done confidently yet since their six-block narratives are still `[NEEDS INPUT]`.
+- **Split it** into two more discriminating capabilities — vendor/contract management vs. partner/sponsor development. Her own original example was the Flutterwave sponsorship pipeline as partner/sponsor development — that case has since been removed entirely (see the Lendsqr swap below), so the clearest example of that flavour is currently gone from the data; a venue contract (plausibly C5, Osun Tech Festival) is still the vendor/contract-management example. This is a change to the `CAPABILITIES` axis itself (6 columns → 7), which means redoing the column-order and segmentation analysis from Step-3-prep — a real amount of rework, and accurate per-case reclassification of the other stakeholder-tagged cases (C1, C2, C4, C7, Lendsqr) can't be done confidently yet since most of their six-block narratives are still `[NEEDS INPUT]`.
 - **Leave it as one column, but stop counting it as evidence** — treat it as context rather than a claim (e.g. don't let it count toward the "how many domains does this capability appear in" argument the matrix is built to make).
 
 Recommendation: defer the actual choice until Phase 0 content exists for the stakeholder-tagged cases — right now a split would be executed mostly by guessing which flavour each case is, which is exactly the kind of invented-claim risk R1 exists to prevent. Flagging, not deciding. **Held, per Ayomide.**
@@ -123,3 +123,20 @@ Recommendation: defer the actual choice until Phase 0 content exists for the sta
 **Verified, not claimed:** re-ran `scripts/build-case-pages.mjs` — C1 now generates as `(complete)`, the first P0 case to pass the guard for real. Loaded the actual generated page in a browser: zero `.needs-input` spans, no draft banner, capability tags correctly show only Stakeholder/vendor, Live ops and Research & reporting. Prev/next nav correctly points to Frobits (Consumer) and the Africa Infrastructure Roundtable (Infrastructure) — different domains on both sides, per F11.
 
 Five P0 cases remain refused (roundtable, lodgr, volunteer-network, osun-tech-festival, website-redesign) — none has had a real content/discovery pass yet. That's expected, not a regression.
+
+## Review — six data changes: Lendsqr swap, renames, 2026 dates
+
+**Fintech swap:** removed `fintech-sponsorship-pipeline` entirely (not merged, not archived — gone) and added `lendsqr-product-operations` in its place. CV-sourced facts only (role, org, dates, the two capability descriptions); the six blocks are open questions since no discovery pass has happened. Fintech now rests on this one case, as instructed.
+
+**Coverage check, re-run and reported:** the swap changed nothing structurally — Fintech supported exactly `{stakeholder, research}` before and supports exactly the same two after, just via Lendsqr instead of the removed case. **No capability column lost a domain.** Full table is identical to the last run except the Fintech row now names `lendsqr-product-operations` instead of the removed slug.
+
+**Renames applied:** "Three beauty MVPs" → "Calnita MVP"; "Clea and Pushbio enhancements" → "Clea and Pushbio Project Management." Slugs left untouched (URLs are stable identifiers; renaming a title shouldn't silently break a link elsewhere).
+
+**Dates:** added year-precision 2026 dates to the Africa Infrastructure Roundtable (2026 → 2027, matching what its own title already stated — WRD-sourced, not new), the Volunteer Network, the website redesign, Boldtron, Lodgr, and Frobits (all 2026, single year). Exact months/days remain unconfirmed and are noted as such in code comments — this closes the "no date shown" gap on every card except Osun Tech Festival, which wasn't in the instruction.
+
+**Verified, not claimed:**
+- Swept the full data file for embedded/malformed NEEDS INPUT markers — clean.
+- Ran the build script: Lendsqr generates as a correctly-flagged P1 draft (loud placeholder styling, draft banner, zero metrics section since `metrics: []` — the empty-section skip built for C1 generalised correctly to a second case without any template change needed).
+- Removed the orphaned `work/fintech-sponsorship-pipeline/` directory left over from before the case was deleted — a stale generated page for a case that no longer exists in the data would have been a real publish risk.
+- Loaded the actual home page matrix: 11 bar links (was 11 before too — a straight swap), zero console errors, Fintech's bar renders as `LENDSQR / 2025` with the identical gap shape the old case had (same capability pair, same axis positions). Every one of the six named cards now shows a year on the matrix.
+- Loaded Lendsqr's generated page directly: correct title, entity line, capability tags, and prev/next nav correctly shows the renamed "Clea and Pushbio Project Management" title and weights to a different domain (Developer/web infrastructure) per F11.

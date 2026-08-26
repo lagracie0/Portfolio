@@ -148,8 +148,11 @@ export const CASES = [
     domain: 'infrastructure',
     capabilities: ['delivery', 'stakeholder', 'live-ops'],
     priority: 'P0',
-    dateStart: '[NEEDS INPUT: exact engagement start date — WRD only names event years, Manchester 2026 and London 2027]',
-    dateEnd: '[NEEDS INPUT: exact engagement end date, or "ongoing" if the London 2027 pipeline is still live]',
+    // Year precision only, per instruction — matches what the title itself
+    // already states (Manchester 2026, London 2027). Exact month/day still
+    // unconfirmed.
+    dateStart: '2026',
+    dateEnd: '2027',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before this roundtable programme]',
     ],
@@ -177,8 +180,8 @@ export const CASES = [
     domain: 'hospitality',
     capabilities: ['build-from-zero', 'delivery', 'research'],
     priority: 'P0',
-    dateStart: '[NEEDS INPUT: engagement start date]',
-    dateEnd: '[NEEDS INPUT: engagement end date]',
+    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
+    dateEnd: '2026',
     // Structural placeholder content, drafted for Step 5 template proportions
     // (not final copy). No discovery Q&A has been done for this case yet —
     // unlike C1, nothing here beyond title/domain/capabilities is confirmed,
@@ -223,8 +226,10 @@ export const CASES = [
     domain: 'infrastructure',
     capabilities: ['build-from-zero', 'stakeholder'],
     priority: 'P0',
-    dateStart: '[NEEDS INPUT: start date — WRD gives only a 4-month duration, not calendar dates]',
-    dateEnd: '[NEEDS INPUT: end date]',
+    // Year confirmed per instruction; the 4-month window within 2026 and
+    // exact start/end dates are still unconfirmed.
+    dateStart: '2026',
+    dateEnd: '2026',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before the volunteer network]',
     ],
@@ -283,8 +288,8 @@ export const CASES = [
     domain: 'devinfra',
     capabilities: ['delivery', 'research'],
     priority: 'P0',
-    dateStart: '[NEEDS INPUT: engagement start date]',
-    dateEnd: '[NEEDS INPUT: engagement end date]',
+    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
+    dateEnd: '2026',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before the redesign]',
     ],
@@ -314,8 +319,8 @@ export const CASES = [
     domain: 'consumer',
     capabilities: ['delivery', 'stakeholder'],
     priority: 'P1',
-    dateStart: '[NEEDS INPUT: engagement start date]',
-    dateEnd: '[NEEDS INPUT: engagement end date]',
+    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
+    dateEnd: '2026',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed when she became sole point of accountability for this remote team]',
     ],
@@ -337,34 +342,38 @@ export const CASES = [
     ],
   },
   {
-    slug: 'fintech-sponsorship-pipeline',
-    title: 'Sponsorship pipeline — Flutterwave, Moniepoint, Paystack, Afin Bank',
-    org: '[NEEDS INPUT: the organisation this sponsorship pipeline was run for — Flutterwave/Moniepoint/Paystack/Afin Bank are the sponsor targets, not necessarily the employer]',
+    // Replaces the removed "fintech-sponsorship-pipeline" case (Ayomide's
+    // instruction — removed entirely, not merged). Fintech now rests on
+    // this single case. Facts below are sourced directly from the CV; no
+    // discovery pass has been done, so the six blocks are open questions,
+    // not drafted narrative.
+    slug: 'lendsqr-product-operations',
+    title: 'Product operations — Lendsqr',
+    org: 'Lendsqr',
+    entityLine: 'Product Operations Officer, Lendsqr — August to September 2025.',
     domain: 'fintech',
-    capabilities: ['stakeholder', 'research'],
+    capabilities: ['research', 'stakeholder'],
     priority: 'P1',
-    dateStart: '[NEEDS INPUT: engagement start date]',
-    dateEnd: '[NEEDS INPUT: engagement end date]',
+    dateStart: '2025-08',
+    dateEnd: '2025-09',
     situation: [
-      '[NEEDS INPUT: 2–3 sentences on what existed before the sponsorship pipeline]',
+      '[NEEDS INPUT: 2–3 sentences on what existed at Lendsqr when she joined as Product Operations Officer]',
     ],
     missing: [
-      '[NEEDS INPUT: the specific structural absence]',
+      '[NEEDS INPUT: the specific structural or process absence she stepped into]',
     ],
     built: [
-      '[NEEDS INPUT: the structures introduced — e.g. outreach process, pipeline tracking]',
+      '[NEEDS INPUT: what she specifically built or introduced — e.g. a process for tracking usage trends, a system for triaging user-facing technical issues]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
     ],
     outcome: [
-      { text: '[NEEDS INPUT: outcome statement]', status: '[NEEDS INPUT: green/amber/red]' },
+      { text: '[NEEDS INPUT: outcome statement — what resulted from the usage-trend analysis or the technical-issue resolution work]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
-    metrics: [
-      { value: '25%', label: 'positive response rate', method: '[NEEDS INPUT: response to what — e.g. cold outreach, proposal — out of how many contacted, over what period, per R2]' },
-    ],
+    metrics: [],
     artifacts: [
-      '[NEEDS INPUT: a redacted/reconstructed artifact — e.g. pipeline tracker structure, outreach brief]',
+      '[NEEDS INPUT: a redacted/reconstructed artifact — e.g. a usage-trend report format, an issue-triage log]',
     ],
   },
   {
@@ -374,7 +383,7 @@ export const CASES = [
     // feedback analysis — a different flavour of research from Calnita's
     // user research below; both are real, per instruction.
     slug: 'hostmeng-clea-pushbio',
-    title: 'Clea and Pushbio enhancements',
+    title: 'Clea and Pushbio Project Management',
     org: 'HostMeNG',
     domain: 'devinfra',
     capabilities: ['delivery', 'research'],
@@ -411,7 +420,7 @@ export const CASES = [
     // Consumer & marketplaces × Research & reporting — Calnita is real
     // consumer-domain evidence for that cell.
     slug: 'calnita-beauty-mvps',
-    title: 'Three beauty MVPs',
+    title: 'Calnita MVP',
     org: 'Calnita',
     domain: 'consumer',
     capabilities: ['delivery', 'research'],
@@ -448,8 +457,8 @@ export const CASES = [
     domain: 'consumer',
     capabilities: ['ships-it-herself'],
     priority: 'P1',
-    dateStart: '[NEEDS INPUT: engagement/project start date]',
-    dateEnd: '[NEEDS INPUT: engagement/project end date, or "ongoing"]',
+    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
+    dateEnd: '2026',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before Frobits — this is her own product, so this should describe the problem she set out to solve]',
     ],
