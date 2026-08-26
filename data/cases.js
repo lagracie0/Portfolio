@@ -97,6 +97,7 @@ export const CASES = [
     situation: [
       'The Situation Room ran as a designed operation with a defined command structure: a Situation Room Lead, supervisors over LGA desks, desk officers taking field reports, and separate technical, logistics, media, security and incident functions, backed by a standby support group.',
       'Reports moved along a fixed chain from polling-unit agents through ward and LGA leads to the desk, and issues were classified Green, Amber or Red according to severity.',
+      'Agents were each assigned to a specific LGA, so conflicting reports from within the same territory were rare.',
       'Some issues during the operation were escalated beyond the desk to the media, security and standby support functions.',
       'She supervised a cluster of LGA desks inside that structure across a four-week run-up and through election day.',
     ],
@@ -118,13 +119,18 @@ export const CASES = [
     // build guard or renderable as a flagged placeholder; this bit here
     // once already (see js/matrix.js's isNeedsInput and this file's own
     // history) and is worth not repeating.
+    //
+    // A third decision (two agents contradicting each other on the same
+    // location) was dropped rather than answered: Ayomide's real answer was
+    // that this rarely happened, because agents were each assigned a single
+    // LGA (see situation[] above). Writing a decision narrative for a
+    // scenario that didn't really occur would overstate it — the honest
+    // version of that fact lives in situation[], not here.
     decisions: [
-      'Verification before escalation. The room\'s standing rule was that no rumour was treated as fact until source and location were confirmed — but the same rule required Amber and Red issues to move up immediately, and those pull in opposite directions when something serious arrives unverified.',
-      '[NEEDS INPUT: Describe one time this tension actually played out — what came in, what did she do, and what did she give up by choosing it: speed or certainty?]',
-      'Contradictory reports arrived from the same location, from two different agents with different accounts.',
-      '[NEEDS INPUT: Did she hold for a third source, weight one agent over the other, or escalate both and let the incident desk resolve it? What did that cost?]',
-      'Degraded conditions in rural areas were a known risk — connectivity, app access and rural reach — and the room tested a backup phone and messaging path before go-live. A manual channel served as the backup for the infrastructure when it failed.',
-      '[NEEDS INPUT: What specifically failed on the day — connectivity, the app, or something else — and did the reporting interval change as a result of switching to the manual channel?]',
+      'On several occasions, security reports came in from party agents at different polling units. The standard response was for the reporting agent to escalate to supervisors, who called ward agents to verify — only escalating to security once a report was confirmed true.',
+      '[NEEDS INPUT: Was there a specific instance where that verification step carried a real cost — a delay that mattered, or a report that turned out true and the wait for confirmation cost something?]',
+      'On election day, some party agents at individual polling units could not be reached to confirm results at that level of detail. The room relied on ward agents and LGA-level party chairmen instead.',
+      '[NEEDS INPUT: What was given up by relying on ward- and LGA-level figures instead of polling-unit-level confirmation — precision, an extra verification step, something else? Did it change how those results were reported up?]',
     ],
     outcome: [
       { text: '[NEEDS INPUT: How many polling units and LGAs did the cluster cover, how many contacts were verified against the target, and what proportion reported on schedule? Any countable figure, with what it measured and over what period.]', status: '[NEEDS INPUT: green/amber/red]' },

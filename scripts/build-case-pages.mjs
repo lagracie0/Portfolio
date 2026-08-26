@@ -190,7 +190,35 @@ ${hasOpenItems ? '<div class="draft-banner">Draft — contains placeholder conte
 `;
 }
 
+// Per-capability domain coverage, with single-case dependencies flagged.
+// Runs on every build, not on request — a domain's only case for a given
+// capability can lose that tag in an ordinary content edit (it happened to
+// Civic x Build-from-zero the same week this check was written), and the
+// matrix's column-level argument quietly weakens the moment that happens.
+// Printing this every time means that's visible immediately, not only when
+// someone thinks to ask.
+function printCoverageReport() {
+  console.log('\nCapability coverage by domain (single-case dependencies flagged):');
+  CAPABILITIES.forEach((cap) => {
+    const casesWithCap = CASES.filter((c) => c.capabilities.includes(cap.slug));
+    const byDomain = new Map();
+    casesWithCap.forEach((c) => {
+      if (!byDomain.has(c.domain)) byDomain.set(c.domain, []);
+      byDomain.get(c.domain).push(c.slug);
+    });
+    console.log(`\n  ${cap.label} — ${byDomain.size} domain(s):`);
+    for (const [domainSlug, slugs] of byDomain) {
+      const domainLabel = DOMAINS.find((d) => d.slug === domainSlug)?.label || domainSlug;
+      const flag = slugs.length === 1 ? '  <-- single case' : '';
+      console.log(`    ${domainLabel}: ${slugs.join(', ')}${flag}`);
+    }
+  });
+  console.log('');
+}
+
 function run() {
+  printCoverageReport();
+
   const generated = [];
   const refused = [];
 
