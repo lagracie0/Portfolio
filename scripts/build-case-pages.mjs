@@ -18,6 +18,18 @@ import { isNeedsInput, displayLabel, displayDateRange } from '../js/matrix.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
+// Never derives meta description / JSON-LD from anything that could carry
+// [NEEDS INPUT] text or stale removed detail — always pulls fresh from the
+// case's own current situation[]/entityLine, so a confidentiality edit like
+// C1's automatically propagates to metadata too, rather than needing a
+// second place to remember to update.
+function metaDescriptionFor(caseObj) {
+  const realSituation = caseObj.situation.find((s) => typeof s === 'string' && !isNeedsInput(s));
+  if (realSituation) return realSituation;
+  if (caseObj.entityLine && !isNeedsInput(caseObj.entityLine)) return caseObj.entityLine;
+  return `${caseObj.title} — a case study from Ayomide Grace Amusan's portfolio.`;
+}
+
 const domainLabel = new Map(DOMAINS.map((d) => [d.slug, d.label]));
 const capabilityLabel = new Map(CAPABILITIES.map((c) => [c.slug, c.label]));
 
@@ -106,16 +118,37 @@ function pageForCase(caseObj, hasOpenItems) {
   const prev = findAdjacent(caseObj, -1);
   const next = findAdjacent(caseObj, 1);
 
+  const metaDescription = metaDescriptionFor(caseObj);
+  const hasRealDates = !isNeedsInput(caseObj.dateStart) && !isNeedsInput(caseObj.dateEnd);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: caseObj.title,
+    description: metaDescription,
+    about: domain,
+    keywords: capNames.join(', '),
+    creator: { '@type': 'Person', name: 'Ayomide Grace Amusan' },
+    ...(hasRealDates ? { temporalCoverage: `${caseObj.dateStart}/${caseObj.dateEnd}` } : {}),
+  };
+
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(caseObj.title)} — Ayomide Grace Amusan</title>
+<meta name="description" content="${escapeHtml(metaDescription)}">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="stylesheet" href="../../css/tokens.css">
 <link rel="stylesheet" href="../../css/home.css">
 <link rel="stylesheet" href="../../css/case.css">
+<meta property="og:title" content="${escapeHtml(caseObj.title)}">
+<meta property="og:description" content="${escapeHtml(metaDescription)}">
+<meta property="og:image" content="../../assets/og/${caseObj.slug}.png">
+<meta property="og:type" content="article">
+<script type="application/ld+json">
+${JSON.stringify(jsonLd, null, 2)}
+</script>
 </head>
 <body>
 
@@ -182,6 +215,7 @@ ${hasOpenItems ? '<div class="draft-banner">Draft — contains placeholder conte
 
 <footer class="site-footer">
   <span>&copy; Ayomide Grace Amusan</span>
+  <a href="../../contact/">Contact</a>
   <a href="../../assets/cv/ayomide-amusan-cv.pdf">Download CV</a>
 </footer>
 
