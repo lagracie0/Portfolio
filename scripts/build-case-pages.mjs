@@ -162,16 +162,16 @@ ${hasOpenItems ? '<div class="draft-banner">Draft — contains placeholder conte
       ${renderList(caseObj.decisions)}
     </section>
 
-    <section class="case-block">
+    ${caseObj.outcome.length > 0 || caseObj.metrics.length > 0 ? `<section class="case-block">
       <h2>Outcome</h2>
       ${renderOutcome(caseObj.outcome)}
       ${renderMetrics(caseObj.metrics)}
-    </section>
+    </section>` : ''}
 
-    <section class="case-block">
+    ${caseObj.artifacts.length > 0 ? `<section class="case-block">
       <h2>Artifacts</h2>
       ${renderArtifacts(caseObj.artifacts)}
-    </section>
+    </section>` : ''}
   </div>
 
   <nav class="case-nav" aria-label="Other cases">

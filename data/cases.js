@@ -106,44 +106,40 @@ export const CASES = [
       'At the point supervisors took over, polling units did not yet have verified contacts, collation had not been tested end to end against live result uploads, and the fallback path for a failure of the app or the internet had been specified but not proven.',
       'The gap was between a designed system and one that had been exercised.',
     ],
+    // built[] originally had a 5th item asking what she set up beyond the
+    // briefing — a bare discovery question with no real content behind it,
+    // not a refinement of something already stated. Closed out per
+    // instruction: removed rather than left as an open question, since
+    // there was genuinely nothing there yet.
     built: [
       'A verified contact network across assigned LGAs — two reliable contacts per polling unit and ward, each with a backup number, so a single unreachable agent never blacked out a unit.',
       'Desk-level reporting discipline: every issue logged with time, LGA, ward, polling unit, source, verification status, action owner and current status, so a report could be picked up mid-shift by someone who had not taken the call.',
       'Paired support supervisors onto documentation oversight at polling-unit and ward level, briefed individually rather than collectively, so accountability for result documentation sat with a named person per area.',
       'Ran collation and reporting readiness tests ahead of go-live, including integration against live result uploads, so failures surfaced before election day rather than during it.',
-      '[NEEDS INPUT: What did she personally set up for her own desks that wasn\'t in the briefing — a shift handover format, a check-in rhythm, a triage rule of her own?]',
     ],
-    // Each decision is two entries — the real setup, then the open question
-    // about the actual trade-off — never one string mixing both. A NEEDS
-    // INPUT marker embedded mid-sentence isn't reliably detectable by the
-    // build guard or renderable as a flagged placeholder; this bit here
-    // once already (see js/matrix.js's isNeedsInput and this file's own
-    // history) and is worth not repeating.
-    //
     // A third decision (two agents contradicting each other on the same
     // location) was dropped rather than answered: Ayomide's real answer was
     // that this rarely happened, because agents were each assigned a single
     // LGA (see situation[] above). Writing a decision narrative for a
     // scenario that didn't really occur would overstate it — the honest
     // version of that fact lives in situation[], not here.
+    //
+    // The two follow-up questions on cost (what the verification step cost,
+    // what the ward/LGA fallback cost) were closed out as refinements, not
+    // gaps — the decisions themselves are substantially told; what verifying
+    // actually cost is a detail Ayomide can add later, not a missing fork.
     decisions: [
       'On several occasions, security reports came in from party agents at different polling units. The standard response was for the reporting agent to escalate to supervisors, who called ward agents to verify — only escalating to security once a report was confirmed true.',
-      '[NEEDS INPUT: Was there a specific instance where that verification step carried a real cost — a delay that mattered, or a report that turned out true and the wait for confirmation cost something?]',
       'On election day, some party agents at individual polling units could not be reached to confirm results at that level of detail. The room relied on ward agents and LGA-level party chairmen instead.',
-      '[NEEDS INPUT: What was given up by relying on ward- and LGA-level figures instead of polling-unit-level confirmation — precision, an extra verification step, something else? Did it change how those results were reported up?]',
     ],
-    outcome: [
-      { text: '[NEEDS INPUT: How many polling units and LGAs did the cluster cover, how many contacts were verified against the target, and what proportion reported on schedule? Any countable figure, with what it measured and over what period.]', status: '[NEEDS INPUT: green/amber/red]' },
-    ],
-    metrics: [
-      { value: '[NEEDS INPUT: number of polling units and LGAs covered]', label: '[NEEDS INPUT: coverage — polling units / LGAs]', method: '[NEEDS INPUT: how counted, over what period]' },
-      { value: '[NEEDS INPUT: number of contacts verified against target]', label: '[NEEDS INPUT: contact-verification rate]', method: '[NEEDS INPUT: how counted, over what period]' },
-      { value: '[NEEDS INPUT: proportion reporting on schedule]', label: '[NEEDS INPUT: on-schedule reporting rate]', method: '[NEEDS INPUT: how counted, over what period]' },
-    ],
-    artifacts: [
-      '[NEEDS INPUT: A redacted incident log showing the mandatory fields — time, LGA, ward, polling unit, source, verification status, action owner, status — with real entries removed.]',
-      '[NEEDS INPUT: The contact-coverage tracker structure, with names and numbers stripped — structure only, no identities, no live contacts.]',
-    ],
+    // outcome[] and metrics[] were both genuinely empty — no real figures
+    // exist yet for coverage, verification rate, or on-schedule reporting.
+    // An absent block is honest; a block of placeholder numbers is debt, so
+    // both are empty arrays rather than open questions. Same for artifacts[]
+    // below — no real artifact has been identified or redacted yet.
+    outcome: [],
+    metrics: [],
+    artifacts: [],
   },
   {
     slug: 'africa-infrastructure-roundtable',
