@@ -140,3 +140,11 @@ Five P0 cases remain refused (roundtable, lodgr, volunteer-network, osun-tech-fe
 - Removed the orphaned `work/fintech-sponsorship-pipeline/` directory left over from before the case was deleted — a stale generated page for a case that no longer exists in the data would have been a real publish risk.
 - Loaded the actual home page matrix: 11 bar links (was 11 before too — a straight swap), zero console errors, Fintech's bar renders as `LENDSQR / 2025` with the identical gap shape the old case had (same capability pair, same axis positions). Every one of the six named cards now shows a year on the matrix.
 - Loaded Lendsqr's generated page directly: correct title, entity line, capability tags, and prev/next nav correctly shows the renamed "Clea and Pushbio Project Management" title and weights to a different domain (Developer/web infrastructure) per F11.
+
+## Review — C1 confidentiality rewrite + five fixes
+
+**C1** now carries the deliberately reduced version supplied verbatim. This is a final version, not a draft awaiting more detail — no restoring the earlier mentions of media/security/standby-support escalation, no named individuals, no description of how escalation to security worked. Decisions are fully resolved text now (no embedded or trailing open questions); outcome/metrics/artifacts stay empty. Verified by loading the real page and scanning its text — the only "media" match was inside "immediate," confirmed a false positive.
+
+**Label rule refined:** leftmost segment wins unless a wider segment elsewhere is more than one column wider. Fixes Civic (1-wide leftmost vs. 2-wide elsewhere) without touching any other case, since every other multi-segment case currently has equal-width segments.
+
+**Everything else:** Lendsqr's spelling checked field-by-field — correct everywhere, no transposition. Osun Tech Festival now has real dates (19–20 Feb 2026) — last card without one, now every card shows a date. Two card titles no longer carry bare metrics ("Langovest Volunteer Network," "Langovest website redesign") — the numbers were already duplicated into `metrics[]` with method notes, so nothing was lost. `/work` now sorts P0 before P1, then most recent first by dateEnd/dateStart, verified against the actual rendered order including a three-way tie at year-only "2026" resolving to stable data-file order.
