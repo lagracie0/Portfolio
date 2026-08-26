@@ -166,3 +166,22 @@ Five P0 cases remain refused (roundtable, lodgr, volunteer-network, osun-tech-fe
 **Verified:** all 5 new/changed top-level routes return 200 locally; all 16 OG images return 200; every internal link on the three new pages resolves to a real page; C1 still passes the publish guard after the metadata changes; no `[NEEDS INPUT]` text leaks outside its intended flagged span anywhere in the new pages.
 
 **Blocker, not fixed this step, flagged per instruction:** the CV PDF still doesn't exist. Every "Download CV" link across the entire site (header, footer, /contact) points to `assets/cv/ayomide-amusan-cv.pdf`, which 404s. **This has to be resolved before Step 7** — an audit pass against a site where the primary persistent call-to-action is a dead link everywhere isn't a real audit.
+
+## Review — real CV received, cross-checked against every case
+
+**The full CV arrived this turn.** Cross-checked it against everything already in the data, not just the specific items asked for.
+
+**Confirmed already correct, no change needed:** /about's FMC Abeokuta title, dates (Sept 2022 – June 2023) and all three experience bullets matched the CV exactly. /contact's email, LinkedIn URL, and "open to employment and contract work" were already live from an earlier turn — confirmed by reading the file directly rather than assuming.
+
+**Tools added to /about**, sourced verbatim from the CV's "Area of expertise and tools" section — the summary line plus four categorised tool lists. No more `[NEEDS INPUT]` there.
+
+**Surgical, CV-sourced corrections applied across other cases** — precise facts resolving existing open items, not new narrative synthesis:
+- Africa Infrastructure Roundtable, Volunteer Network, Website redesign: dates corrected to March–August 2026 (her actual Langovest employment period) — previously inferred from the title alone as 2026→2027, which conflated her employment dates with the 2027 pipeline's *target* date. Flagging this as a real correction, not a refinement: the previous date was a reasonable inference that turned out to be wrong once the real source arrived.
+- Lodgr: `org` resolved to "Lodgr" (the CV names it directly, same pattern as Boldtron/Calnita). Lodgr and Boldtron dates corrected to September 2025 – March 2026 (the Independent PM contract's bounding period — the CV doesn't say which weeks within it belonged to each engagement, so this is the honest bound, not a precise range).
+- HostMeNG: `dateEnd` resolved to January 2025 (was open). `built[]` gained a real sentence (the CV's actual retention-driving method: iterative feedback integration and market-trend analysis) and a situation[] sentence about the cross-country team. The metrics method note was narrowed rather than closed — the CV names *how she drove* the 15% improvement, not *how it was measured* (cohort, tool, period), and those are genuinely different questions.
+- Calnita: `dateStart` corrected to June 2023 (was year-only). Similar treatment: real sentences added to `built[]` and `situation[]`, metrics method narrowed rather than closed for the same reason.
+- Lendsqr: all three CV bullets are now real `built[]` content, replacing what was previously a single open question.
+
+**Deliberately not done, flagged for a decision:** the CV contains enough material to substantially advance `situation[]`/`missing[]`/`decisions[]` for several more P1 cases beyond what's listed above — but "decisions and trade-offs" specifically isn't something a CV ever states (a CV describes what happened, not what was given up to get there), so that block still needs real input regardless of how much CV material exists. Didn't attempt a full six-block rewrite for any case beyond the surgical fixes above without being asked — that's a bigger authorship decision than "here's a document, check it," and worth Ayomide's explicit go-ahead rather than assumed scope.
+
+**Verified:** swept the full data file for embedded markers (clean), re-ran the build script (coverage table unaffected — none of today's changes touched capability tags; C1 still `(complete)`, the same five P0 cases still correctly refused), regenerated both no-JS fallbacks and confirmed the new dates render correctly on the live matrix (Lodgr "2025 → 2026", Boldtron "2025 → 2026", HostMeNG "2024 → 2025", the three Langovest cases "2026").

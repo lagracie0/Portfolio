@@ -121,11 +121,14 @@ export const CASES = [
     domain: 'infrastructure',
     capabilities: ['delivery', 'stakeholder', 'live-ops'],
     priority: 'P0',
-    // Year precision only, per instruction — matches what the title itself
-    // already states (Manchester 2026, London 2027). Exact month/day still
-    // unconfirmed.
-    dateStart: '2026',
-    dateEnd: '2027',
+    // Corrected against the CV: her Langovest role ("Project Manager and
+    // Coordinator") ran March 2026 - August 2026 — that's the actual
+    // engagement period, and what these dates now represent. "London 2027"
+    // in the title is the pipeline's target date, which she scoped and
+    // built during this window — it isn't when her employment ran, and the
+    // two shouldn't be conflated just because the title names both years.
+    dateStart: '2026-03',
+    dateEnd: '2026-08',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before this roundtable programme]',
     ],
@@ -149,12 +152,18 @@ export const CASES = [
   {
     slug: 'lodgr-booking-platform',
     title: 'Lodgr — booking platform, scoping to post-launch review',
-    org: '[NEEDS INPUT: confirm "Lodgr" is the correct org/client name, not just a product name]',
+    org: 'Lodgr', // resolved: the CV names it directly, same pattern as Boldtron/Calnita
     domain: 'hospitality',
     capabilities: ['build-from-zero', 'delivery', 'research'],
     priority: 'P0',
-    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
-    dateEnd: '2026',
+    // Corrected against the CV: this ran during her "Independent Project
+    // Manager (Contract), Remote, EMEA" period, September 2025 - March
+    // 2026. The CV doesn't say which weeks within that window belonged to
+    // Lodgr specifically (she ran Lodgr, Boldtron, and other engagements
+    // concurrently in this role), so these are the real bounding dates, not
+    // a precise start/end for this engagement alone.
+    dateStart: '2025-09',
+    dateEnd: '2026-03',
     // Structural placeholder content, drafted for Step 5 template proportions
     // (not final copy). No discovery Q&A has been done for this case yet —
     // unlike C1, nothing here beyond title/domain/capabilities is confirmed,
@@ -199,10 +208,12 @@ export const CASES = [
     domain: 'infrastructure',
     capabilities: ['build-from-zero', 'stakeholder'],
     priority: 'P0',
-    // Year confirmed per instruction; the 4-month window within 2026 and
-    // exact start/end dates are still unconfirmed.
-    dateStart: '2026',
-    dateEnd: '2026',
+    // Corrected against the CV: her Langovest role ran March 2026 - August
+    // 2026. The network reached 12 volunteers "within 4 months" per the CV,
+    // which fits inside this window but doesn't pin down which 4 months
+    // exactly — that precision is still unconfirmed.
+    dateStart: '2026-03',
+    dateEnd: '2026-08',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before the volunteer network]',
     ],
@@ -261,8 +272,8 @@ export const CASES = [
     domain: 'devinfra',
     capabilities: ['delivery', 'research'],
     priority: 'P0',
-    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
-    dateEnd: '2026',
+    dateStart: '2026-03', // corrected against the CV: her Langovest role's actual dates
+    dateEnd: '2026-08',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed before the redesign]',
     ],
@@ -292,8 +303,11 @@ export const CASES = [
     domain: 'consumer',
     capabilities: ['delivery', 'stakeholder'],
     priority: 'P1',
-    dateStart: '2026', // year confirmed per instruction; month/day still unconfirmed
-    dateEnd: '2026',
+    // Corrected against the CV: same Independent PM contract period as
+    // Lodgr, September 2025 - March 2026 — the real bounding dates, not a
+    // precise start/end for Boldtron specifically within that window.
+    dateStart: '2025-09',
+    dateEnd: '2026-03',
     situation: [
       '[NEEDS INPUT: 2–3 sentences on what existed when she became sole point of accountability for this remote team]',
     ],
@@ -336,7 +350,9 @@ export const CASES = [
       '[NEEDS INPUT: the specific structural or process absence she stepped into]',
     ],
     built: [
-      '[NEEDS INPUT: what she specifically built or introduced — e.g. a process for tracking usage trends, a system for triaging user-facing technical issues]',
+      'Managed customer enquiries and collaborated with the product team to resolve technical issues, working toward a seamless user experience.',
+      'Supported the development and continuous improvement of product documentation, knowledge bases and user resources.',
+      'Tracked and analysed product usage trends to identify process gaps and inform product improvement initiatives.',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
@@ -361,17 +377,17 @@ export const CASES = [
     domain: 'devinfra',
     capabilities: ['delivery', 'research'],
     priority: 'P1',
-    dateStart: '2024-07', // per your note; WRD open question 6 also gives "July 2024"
-    dateEnd: '[NEEDS INPUT: engagement end date, or "ongoing"]',
+    dateStart: '2024-07',
+    dateEnd: '2025-01', // resolved from the CV: "Technical Project Manager, HostMeNG, July 2024 - January 2025"
     situation: [
-      '[NEEDS INPUT: 2–3 sentences on what existed at HostMeNG when she arrived]',
+      'The role spanned a cross-functional team across multiple countries, working with developers, designers, website managers and other stakeholders to deliver web hosting services.',
+      '[NEEDS INPUT: What specifically existed for Clea and Pushbio when she arrived — what was the product state before her enhancements?]',
     ],
     missing: [
       '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      'Market-trend and feedback analysis work.',
-      '[NEEDS INPUT: What was analysed, what method was used, and how did findings feed back into Clea/Pushbio decisions?]',
+      'Led product enhancements for Clea and Pushbio through iterative feedback integration and market-trend analysis, increasing user retention by 15%.',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
@@ -380,7 +396,7 @@ export const CASES = [
       { text: '[NEEDS INPUT: outcome statement]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
     metrics: [
-      { value: '+15%', label: 'retention on Clea and Pushbio', method: '[NEEDS INPUT: retention of what user cohort, measured how, over what period, per R2]' },
+      { value: '+15%', label: 'retention on Clea and Pushbio', method: '[NEEDS INPUT: retention measured how — which user cohort, what tool or report, over what period? The CV names the driving method (iterative feedback integration and market-trend analysis, now in built[]) but not the measurement mechanics.]' },
     ],
     artifacts: [
       '[NEEDS INPUT: a redacted/reconstructed artifact from this engagement]',
@@ -398,17 +414,19 @@ export const CASES = [
     domain: 'consumer',
     capabilities: ['delivery', 'research'],
     priority: 'P1',
-    dateStart: '2023', // per your note ("2023–24"); exact month NEEDS INPUT
-    dateEnd: '2024-03', // per WRD open question 6 ("Calnita ended March 2024")
+    dateStart: '2023-06', // resolved from the CV: "Project Manager, Calnita, June 2023 – March 2024"
+    dateEnd: '2024-03',
     situation: [
-      '[NEEDS INPUT: 2–3 sentences on what existed at Calnita when she arrived]',
+      'The role directed collaboration across product development, marketing and engineering departments.',
+      '[NEEDS INPUT: What specifically existed for the beauty-discovery product when she arrived?]',
     ],
     missing: [
       '[NEEDS INPUT: the specific structural absence]',
     ],
     built: [
-      'User research initiatives that directly shaped the product roadmap.',
-      '[NEEDS INPUT: What method — surveys, interviews, usability testing — and what cadence?]',
+      'User research initiatives conducted with marketing and engineering teams, identifying unmet needs that shaped the product roadmap.',
+      'Data-backed prioritisation of MVP scope and sequencing, which drove the on-time delivery result below.',
+      '[NEEDS INPUT: What research method was used for the user research — surveys, interviews, usability testing — and what cadence?]',
     ],
     decisions: [
       '[NEEDS INPUT: 2–3 real decision forks and what was traded off]',
@@ -417,7 +435,7 @@ export const CASES = [
       { text: '[NEEDS INPUT: outcome statement]', status: '[NEEDS INPUT: green/amber/red]' },
     ],
     metrics: [
-      { value: '90%', label: 'of 3 beauty MVPs shipped on-time', method: '[NEEDS INPUT: "on-time" against what committed dates, and what counted as the 10% that was not, per R2]' },
+      { value: '90%', label: 'of 3 beauty MVPs shipped on-time', method: '[NEEDS INPUT: "on-time" against what committed dates, and what counted as the 10% that was not? The CV names the driving method (data-backed prioritisation, now in built[]) but not the measurement mechanics.]' },
     ],
     artifacts: [
       '[NEEDS INPUT: a redacted/reconstructed artifact from this engagement]',
