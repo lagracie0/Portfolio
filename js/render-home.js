@@ -344,6 +344,15 @@ function buildMatrixView() {
   // a later plain rule for the same property). Because buildMatrixView()
   // only ever runs once per page load (see init(), below), this can never
   // replay.
+  //
+  // Also ends the instant any real interaction reaches the matrix — found
+  // by Tabbing immediately after load during Step 7's audit: a fast
+  // keyboard user can land focus on a bar-seg before its staggered delay
+  // has elapsed, while it's still at opacity:0 (and so is its focus-ring
+  // box-shadow, since that's drawn on the same element). A decorative
+  // first-paint flourish must never cost a keyboard user a focus indicator,
+  // so `focusin` anywhere in the matrix snaps every bar to its resolved
+  // state immediately, same as if the animation had already finished.
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const resolveTargets = matrix.querySelectorAll('.bar-seg, .bar-connector');
     const delayBudgetMs = 300;
@@ -353,7 +362,12 @@ function buildMatrixView() {
       node.style.setProperty('--resolve-delay', `${delay}ms`);
     });
     matrix.classList.add('matrix-resolving');
-    window.setTimeout(() => matrix.classList.remove('matrix-resolving'), delayBudgetMs + durationMs + 50);
+    const endResolve = () => matrix.classList.remove('matrix-resolving');
+    const resolveTimer = window.setTimeout(endResolve, delayBudgetMs + durationMs + 50);
+    matrix.addEventListener('focusin', () => {
+      window.clearTimeout(resolveTimer);
+      endResolve();
+    }, { once: true });
   }
 
   // ---- hover/focus dimming: stays inside .matrix, never touches the page ----
