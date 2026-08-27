@@ -131,8 +131,8 @@ button:focus-visible {
    That append is what was causing the deterministic CLS hit measured on
    this page, NOT a font swap: at first paint #app-root has zero height, so
    .credentials/.site-footer render ~389px from the top; once JS runs, the
-   ~4191px-tall card list lands above them and shoves them down by nearly a
-   full viewport height in a later frame, which the Layout Instability API
+   tall card list lands above them and shoves them down by nearly a full
+   viewport height in a later frame, which the Layout Instability API
    scores fully because both elements already had a painted "before" rect.
    Reserving #app-root's settled height up front means that height is
    claimed before first paint, so the append no longer moves anything below
@@ -140,11 +140,15 @@ button:focus-visible {
    shorter) is what actually ends up visible, and reserving mobile's
    height there would leave a large dead gap under it. Measured at 412x823
    (Lighthouse's default mobile viewport) with the mobile view fully
-   built: 4191px. Re-measure if the case count or card content changes
-   enough to move this materially. */
+   built, 12 cases: 4567px. This is a floor tied to the case count and
+   content length, not a one-time number — it MUST be re-measured any time
+   a case is added, removed, or grows enough to change the mobile card
+   list's total height (a stale, too-small value here reopens exactly the
+   layout shift this rule exists to prevent, since the real content then
+   grows past the reserved floor after first paint). */
 @media (max-width: 767px) {
   #app-root {
-    min-height: 4191px;
+    min-height: 4567px;
   }
 }
 
