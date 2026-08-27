@@ -152,6 +152,8 @@ ${JSON.stringify(jsonLd, null, 2)}
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 ${hasOpenItems ? '<div class="draft-banner">Draft — contains placeholder content, not for publication</div>' : ''}
 
 <header class="site-header">

@@ -54,30 +54,47 @@ function buildMobileView() {
 
   const groupsContainer = el('div', { class: 'card-groups' });
 
-  function makeChip(labelText, isActive, onToggle) {
+  function makeChip(slug, labelText, isActive, onToggle) {
     const chip = el('button', {
       class: 'chip',
       type: 'button',
       text: labelText,
+      'data-slug': slug,
       'aria-pressed': isActive ? 'true' : 'false',
     });
     chip.addEventListener('click', onToggle);
     return chip;
   }
 
+  // See js/render-work.js's renderChips for why this focus bookkeeping is
+  // here: rebuilding the chip row on every filter change used to drop
+  // keyboard focus to <body>, since replaceChildren() destroys the button
+  // the user just activated and nothing restored focus afterward.
   function renderChips() {
+    const focused = document.activeElement;
+    const focusedSlug = (focused && focused.closest('.chip-scroll')) ? focused.dataset.slug : null;
+    const focusedScroll = focusedSlug
+      ? (focused.closest('.chip-scroll') === domainScroll ? 'domain' : 'capability')
+      : null;
+
     domainScroll.replaceChildren(
-      ...DOMAINS.map((d) => makeChip(d.label, state.domain === d.slug, () => {
+      ...DOMAINS.map((d) => makeChip(d.slug, d.label, state.domain === d.slug, () => {
         state.domain = state.domain === d.slug ? null : d.slug;
         renderAll();
       }))
     );
     capabilityScroll.replaceChildren(
-      ...CAPABILITIES.map((c) => makeChip(c.label, state.capability === c.slug, () => {
+      ...CAPABILITIES.map((c) => makeChip(c.slug, c.label, state.capability === c.slug, () => {
         state.capability = state.capability === c.slug ? null : c.slug;
         renderAll();
       }))
     );
+
+    if (focusedSlug) {
+      const scroll = focusedScroll === 'domain' ? domainScroll : capabilityScroll;
+      const replacement = scroll.querySelector(`[data-slug="${focusedSlug}"]`);
+      if (replacement) replacement.focus();
+    }
   }
 
   function matchingCases() {

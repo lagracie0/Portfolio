@@ -109,23 +109,41 @@ function init() {
     renderAll();
   }
 
-  function makeChip(labelText, isActive, onToggle) {
-    const chip = el('button', { class: 'chip', type: 'button', text: labelText, 'aria-pressed': isActive ? 'true' : 'false' });
+  function makeChip(slug, labelText, isActive, onToggle) {
+    const chip = el('button', { class: 'chip', type: 'button', text: labelText, 'data-slug': slug, 'aria-pressed': isActive ? 'true' : 'false' });
     chip.addEventListener('click', onToggle);
     return chip;
   }
 
+  // Rebuilding the chip row on every filter change used to drop keyboard
+  // focus to <body> — replaceChildren() destroys the button the user just
+  // activated, and nothing put focus back anywhere. A keyboard user who
+  // filtered lost their place and had to Tab from the top of the page
+  // again. Now: note which chip (if any) had focus before the rebuild, and
+  // restore focus to its replacement by data-slug after.
   function renderChips() {
+    const focused = document.activeElement;
+    const focusedSlug = (focused && focused.closest('.chip-scroll')) ? focused.dataset.slug : null;
+    const focusedScroll = focusedSlug
+      ? (focused.closest('.chip-scroll') === domainScroll ? 'domain' : 'capability')
+      : null;
+
     domainScroll.replaceChildren(
-      ...DOMAINS.map((d) => makeChip(d.label, state.domain === d.slug, () =>
+      ...DOMAINS.map((d) => makeChip(d.slug, d.label, state.domain === d.slug, () =>
         setState({ ...state, domain: state.domain === d.slug ? null : d.slug })
       ))
     );
     capabilityScroll.replaceChildren(
-      ...CAPABILITIES.map((c) => makeChip(c.label, state.capability === c.slug, () =>
+      ...CAPABILITIES.map((c) => makeChip(c.slug, c.label, state.capability === c.slug, () =>
         setState({ ...state, capability: state.capability === c.slug ? null : c.slug })
       ))
     );
+
+    if (focusedSlug) {
+      const scroll = focusedScroll === 'domain' ? domainScroll : capabilityScroll;
+      const replacement = scroll.querySelector(`[data-slug="${focusedSlug}"]`);
+      if (replacement) replacement.focus();
+    }
   }
 
   function renderActiveFilters() {
