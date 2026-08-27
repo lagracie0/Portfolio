@@ -1,13 +1,17 @@
 // Generates static work/{slug}/index.html for every case in data/cases.js.
 // Run: node scripts/build-case-pages.mjs
 //
-// Hard guard: a P0 case that still contains any [NEEDS INPUT: ...] anywhere
-// in its data is refused — no page is written for it, and the script exits
-// non-zero — so the site cannot publish placeholder content for a case
-// meant to be launch-ready by accident. P1 cases are generated regardless,
-// but any remaining [NEEDS INPUT] text renders with a loud, unmissable
-// flag (see css/case.css .needs-input) and the page carries a draft banner,
-// so an unfinished P1 page can never be mistaken for finished copy.
+// Every case gets a page, P0 or P1 — a case with any remaining
+// [NEEDS INPUT: ...] renders with a loud, unmissable flag (see
+// css/case.css .needs-input) and a draft banner, so an unfinished page can
+// never be mistaken for finished copy. This applies identically regardless
+// of priority: a P0 matrix bar with open items used to link nowhere at all
+// (the page was refused outright), which is worse than a visibly unfinished
+// page — a 404 gives a visitor no information, a draft banner gives them
+// the truth. The guard still blocks a deploy: the script exits non-zero and
+// prints every P0 case with open items and exactly what's missing, so an
+// unfinished P0 case can't ship silently — it just isn't a 404 while it's
+// being worked on.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -256,15 +260,14 @@ function run() {
   printCoverageReport();
 
   const generated = [];
-  const refused = [];
+  const incompleteP0 = [];
 
   CASES.forEach((caseObj) => {
     const openItems = collectNeedsInput(caseObj, '', []);
     const hasOpenItems = openItems.length > 0;
 
     if (caseObj.priority === 'P0' && hasOpenItems) {
-      refused.push({ slug: caseObj.slug, openItems });
-      return;
+      incompleteP0.push({ slug: caseObj.slug, openItems });
     }
 
     const dir = join(ROOT, 'work', caseObj.slug);
@@ -276,16 +279,16 @@ function run() {
   console.log(`\nGenerated ${generated.length} of ${CASES.length} case pages:`);
   generated.forEach((g) => console.log(`  ${g.draft ? '(draft)' : '(complete)'} work/${g.slug}/ — ${g.priority}`));
 
-  if (refused.length > 0) {
-    console.log(`\nREFUSED — ${refused.length} P0 case(s) not generated (still contain [NEEDS INPUT]):`);
-    refused.forEach(({ slug, openItems }) => {
+  if (incompleteP0.length > 0) {
+    console.log(`\nBLOCKING — ${incompleteP0.length} P0 case(s) generated as drafts, not deploy-ready (still contain [NEEDS INPUT]):`);
+    incompleteP0.forEach(({ slug, openItems }) => {
       console.log(`\n  ${slug} — ${openItems.length} open item(s):`);
       openItems.forEach(({ path, text }) => console.log(`    - ${path}: ${text}`));
     });
-    console.log('\nBuild did not publish these pages. Resolve the items above, or they stay unpublished.\n');
+    console.log('\nPages were written with a draft banner so no matrix bar links to a 404, but this build does not clear the deploy gate. Resolve the items above.\n');
     process.exitCode = 1;
   } else {
-    console.log('\nNo P0 refusals.\n');
+    console.log('\nNo incomplete P0 cases.\n');
   }
 }
 

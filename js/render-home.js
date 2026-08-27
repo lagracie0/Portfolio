@@ -172,6 +172,9 @@ function buildMobileView() {
 function buildMatrixView() {
   const model = buildMatrixModel(DOMAINS, CAPABILITIES, CASES);
   const columnCount = CAPABILITIES.length;
+  const capCaseCounts = CAPABILITIES.map(
+    (cap) => CASES.filter((c) => c.capabilities.includes(cap.slug)).length
+  );
 
   const matrixScroll = el('div', { class: 'matrix-scroll' });
   const matrix = el('div', {
@@ -182,12 +185,23 @@ function buildMatrixView() {
   // Header row
   matrix.appendChild(el('div', { class: 'col-head corner', style: 'grid-row:1; grid-column:1;' }));
   CAPABILITIES.forEach((cap, i) => {
+    const count = capCaseCounts[i];
     const head = el('div', {
       class: 'col-head',
       text: cap.label,
       'data-col': i,
       tabindex: '-1',
-    });
+    }, [
+      // Motion B: live case count beside the label on hover. Text is real
+      // and present from first build (not inserted later), just hidden by
+      // opacity — see .hover-count in home.css — so revealing it can never
+      // shift the header row's width or height.
+      el('span', {
+        class: 'hover-count',
+        text: `· ${count}`,
+        'aria-label': `${count} case${count === 1 ? '' : 's'}`,
+      }),
+    ]);
     head.style.gridRow = '1';
     head.style.gridColumn = `${i + 2} / ${i + 3}`;
     head.addEventListener('mouseenter', () => setActiveColumn(i));
@@ -207,9 +221,19 @@ function buildMatrixView() {
       class: 'domain-label',
       text: domain.label,
       'data-domain': domain.slug,
-    });
+    }, [
+      // Same reserved-space count reveal as the column headers (Motion B),
+      // keyed to how many cases sit in this row rather than this column.
+      el('span', {
+        class: 'hover-count',
+        text: `· ${cases.length}`,
+        'aria-label': `${cases.length} case${cases.length === 1 ? '' : 's'}`,
+      }),
+    ]);
     domainLabelEl.style.gridRow = `${labelStart} / ${labelEnd}`;
     domainLabelEl.style.gridColumn = '1';
+    domainLabelEl.addEventListener('mouseenter', () => setActiveDomain(domain.slug));
+    domainLabelEl.addEventListener('mouseleave', clearActive);
     matrix.appendChild(domainLabelEl);
 
     for (let lane = 0; lane < laneCount; lane++) {
@@ -307,6 +331,31 @@ function buildMatrixView() {
 
   matrixScroll.appendChild(matrix);
 
+  // ---- Motion A: one-shot "resolve" reveal, first paint only ----
+  // Bars draw in via opacity+transform (never layout-affecting properties),
+  // staggered by DOM order, with the per-bar delay spread across a fixed
+  // budget so the whole sequence is always under 600ms regardless of how
+  // many cases exist. Skipped entirely under prefers-reduced-motion — no
+  // class, no delay bookkeeping, no timer — rather than relying on a CSS
+  // override to neutralise it after the fact. The class is removed once
+  // the sequence finishes so the animation's held end-state can never
+  // outlive it and block the .is-dimming hover/focus opacity rules below
+  // (a CSS animation's fill-forwards state otherwise wins the cascade over
+  // a later plain rule for the same property). Because buildMatrixView()
+  // only ever runs once per page load (see init(), below), this can never
+  // replay.
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const resolveTargets = matrix.querySelectorAll('.bar-seg, .bar-connector');
+    const delayBudgetMs = 300;
+    const durationMs = 250;
+    resolveTargets.forEach((node, i) => {
+      const delay = resolveTargets.length > 1 ? (i / (resolveTargets.length - 1)) * delayBudgetMs : 0;
+      node.style.setProperty('--resolve-delay', `${delay}ms`);
+    });
+    matrix.classList.add('matrix-resolving');
+    window.setTimeout(() => matrix.classList.remove('matrix-resolving'), delayBudgetMs + durationMs + 50);
+  }
+
   // ---- hover/focus dimming: stays inside .matrix, never touches the page ----
   function setActiveDomain(slug) {
     matrix.classList.add('is-dimming');
@@ -314,7 +363,10 @@ function buildMatrixView() {
   }
   function setActiveColumn(colIndex) {
     matrix.classList.add('is-dimming');
-    matrix.querySelectorAll('.col-head')[colIndex + 0]?.classList.add('is-active');
+    // +1 to skip the corner cell, which is also .col-head and always first
+    // in DOM order — without it this landed on the wrong header (or none),
+    // a pre-existing bug found while wiring up Motion B's hover-count.
+    matrix.querySelectorAll('.col-head')[colIndex + 1]?.classList.add('is-active');
     allBarLinks.forEach(({ link, boundingStart, boundingEnd }) => {
       if (colIndex >= boundingStart && colIndex <= boundingEnd) {
         link.closest('.bar-group').querySelectorAll('.bar-seg, .bar-connector').forEach((n) => n.classList.add('is-active'));

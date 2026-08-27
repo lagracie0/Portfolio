@@ -125,6 +125,29 @@ button:focus-visible {
    at desktop widths once the matrix has been built (see below). It is the
    ONLY thing shown at any width when JS is disabled. */
 
+/* #app-root itself is the actual first-paint element — it ships empty in
+   the static HTML, and js/render-home.js's init() appends .mobile-view
+   (filters + card-groups) into it after the page has already painted.
+   That append is what was causing the deterministic CLS hit measured on
+   this page, NOT a font swap: at first paint #app-root has zero height, so
+   .credentials/.site-footer render ~389px from the top; once JS runs, the
+   ~4191px-tall card list lands above them and shoves them down by nearly a
+   full viewport height in a later frame, which the Layout Instability API
+   scores fully because both elements already had a painted "before" rect.
+   Reserving #app-root's settled height up front means that height is
+   claimed before first paint, so the append no longer moves anything below
+   it. Scoped to mobile widths only — above 768px the matrix (much
+   shorter) is what actually ends up visible, and reserving mobile's
+   height there would leave a large dead gap under it. Measured at 412x823
+   (Lighthouse's default mobile viewport) with the mobile view fully
+   built: 4191px. Re-measure if the case count or card content changes
+   enough to move this materially. */
+@media (max-width: 767px) {
+  #app-root {
+    min-height: 4191px;
+  }
+}
+
 .filters {
   padding: 0 var(--space-5) var(--space-4);
   display: flex;
@@ -381,8 +404,46 @@ button:focus-visible {
 }
 .matrix.is-dimming .col-head.is-active { color: var(--color-ink); opacity: 1; }
 
+/* ---- Motion A: one-shot matrix resolve on first build ---- */
+/* js/render-home.js sets --resolve-delay per bar and adds .matrix-resolving
+   once, right after building the matrix; it removes the class again once
+   the sequence finishes so the animation's held end-state never lingers to
+   block the .is-dimming rules above. Opacity + transform only — both are
+   purely visual (post-layout) properties, so this can never move anything
+   in or below the grid, and transform-origin is pinned left so bars draw
+   in rather than growing from their center. */
+.matrix-resolving .bar-seg,
+.matrix-resolving .bar-connector {
+  transform-origin: left center;
+  animation: bar-resolve 250ms ease-out both;
+  animation-delay: var(--resolve-delay, 0ms);
+}
+
+@keyframes bar-resolve {
+  from { opacity: 0; transform: scaleX(0.85); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+/* ---- Motion B: live case count beside a hovered row/column label ---- */
+/* The count text is real and present from the first build of the matrix —
+   never inserted later — just held at opacity:0, so revealing it on hover
+   is a pure opacity change that can never shift the label's own width or
+   the header row's height. */
+.hover-count {
+  margin-left: var(--space-2);
+  color: var(--color-line);
+  font-weight: var(--weight-mono-regular);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.domain-label.is-active .hover-count,
+.col-head.is-active .hover-count {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bar-seg, .bar-connector, .domain-label, .col-head { transition: none; }
+  .bar-seg, .bar-connector, .domain-label, .col-head, .hover-count { transition: none; }
 }
 
 /* ---- Credentials strip ---- */
@@ -398,6 +459,18 @@ button:focus-visible {
 .credentials .credential {
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
+  /* Explicit, not "normal": row height in this flex-wrap strip otherwise
+     comes from the active font's own ascent+descent+line-gap, which still
+     differs by ~2px/row between JetBrains Mono and its Menlo fallback even
+     with size-adjust/ascent-override/descent-override calibrated (those
+     match horizontal glyph metrics, not the vertical box exactly). That
+     residual per-row difference was the actual, deterministic source of
+     the CLS hit on this element (measured 115px fallback vs 121px real at
+     412px width) — .card-groups' own height was never the cause. Fixing
+     line-height to a constant removes the font-metric dependency entirely:
+     both fonts now render this block at the same 133px, confirmed by
+     rendering each state with the other's font file blocked. */
+  line-height: 1.25rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
   color: var(--color-line);
