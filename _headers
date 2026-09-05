@@ -1,6 +1,13 @@
+# UNUSED — kept as a prepared, ready-to-use alternative, same as the
+# Dockerfile/Caddyfile/railway.json for Railway. The active deploy target
+# is GitHub Pages (see README), which does not read this file at all —
+# it's excluded from that deploy's own published output for exactly that
+# reason (see .github/workflows/deploy.yml's staging step). If Cloudflare
+# Pages is ever used, this file picks up automatically with no changes.
+#
 # Cloudflare Pages header rules — same intent as the Caddyfile prepared
-# for the (currently unused) Railway config, adapted to Cloudflare's own
-# _headers syntax, which is explicitly modelled on Netlify's format.
+# for the Railway config, adapted to Cloudflare's own _headers syntax,
+# which is explicitly modelled on Netlify's format.
 #
 # Specific rules are listed before the broad catch-all. Both Cloudflare's
 # and Netlify's own docs describe matching by most-specific pattern, and

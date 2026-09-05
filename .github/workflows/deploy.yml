@@ -1,0 +1,94 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# No repository or environment secrets are used by this workflow at all —
+# actions/deploy-pages authenticates via the OIDC token from id-token:
+# write below, not a manual secret. If this project ever needs one (an
+# API key, say), add it as a repository secret (Settings → Secrets and
+# variables → Actions → Repository secrets) — this deploy has no
+# per-environment gating that an environment secret would add protection
+# against, so a repository secret is the right, simpler scope here.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Queue rather than cancel a deploy that's already running, so a second
+# quick push can't interrupt one that's mid-flight.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      # Regenerates index.html's featured cases, /work's no-JS fallback
+      # list, and every work/{slug}/index.html from data/cases.js, in
+      # place — the same three scripts and --allow-drafts flag used by
+      # every other deploy target prepared for this project (see
+      # README). All three are pure Node with zero npm dependencies; no
+      # `npm install` step exists or is needed.
+      - name: Generate case pages and featured work
+        run: |
+          node scripts/build-home.mjs
+          node scripts/build-noscript.mjs
+          node scripts/build-case-pages.mjs --allow-drafts
+
+      # GitHub Pages would otherwise publish repo/process files that were
+      # never meant to be public — CLAUDE.md, the WRD doc, tasks/todo.md,
+      # and the other platforms' deploy config (Dockerfile, Caddyfile,
+      # railway.json, _headers) all live at the repo root alongside the
+      # actual site. .nojekyll (see the file itself) turns off Jekyll's
+      # own underscore/dot-prefix exclusion, which makes this staging
+      # step the thing actually keeping those files out of what's
+      # published, not just a tidiness step.
+      - name: Stage site (exclude repo/process files, keep site content)
+        run: |
+          mkdir _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='_site' \
+            --exclude='tasks' \
+            --exclude='scripts' \
+            --exclude='*.md' \
+            --exclude='Dockerfile' \
+            --exclude='Caddyfile' \
+            --exclude='railway.json' \
+            --exclude='_headers' \
+            --exclude='.dockerignore' \
+            --exclude='.nvmrc' \
+            --exclude='.gitignore' \
+            ./ _site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
