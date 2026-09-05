@@ -1,9 +1,10 @@
-/* Home page layout — mobile-first. The Coverage Matrix (desktop) and the
-   card list (mobile, and the no-JS fallback) are both built from the same
-   data; this file only ever shows one of them at a time via .js-matrix-ready
-   (added by js/render-home.js once the matrix has actually been built) so a
-   browser with JS disabled always gets the readable linear list, at any
-   viewport width. See N6. */
+/* Home page layout, plus the filter/card-list rules shared with /work.
+   The Coverage Matrix that used to live here was retired (see
+   tasks/todo.md) — the home page is now fully static HTML with no
+   JS-built content, so there's no enhanced/fallback split left on it.
+   The "Mobile: filters + card list" section below is NOT dead code even
+   though the home page no longer uses it — js/render-work.js still builds
+   that exact structure at runtime for /work's card grid. */
 
 * { box-sizing: border-box; }
 
@@ -83,35 +84,6 @@ a { color: inherit; }
   color: var(--color-ink) !important;
 }
 
-/* ---- Thesis + instruction ---- */
-
-.thesis-block {
-  padding: var(--space-6) var(--space-5) var(--space-3);
-}
-
-.thesis-block h1 {
-  font-family: var(--font-display);
-  font-weight: var(--weight-display);
-  font-size: var(--text-display-1);
-  line-height: var(--leading-display-1);
-  letter-spacing: var(--tracking-display-1);
-  margin: 0;
-  text-wrap: balance;
-}
-
-.instruction-line {
-  padding: 0 var(--space-5) var(--space-4);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--color-line);
-  margin: 0;
-}
-
-.instruction-line .mobile-only-text { display: inline; }
-.instruction-line .desktop-only-text { display: none; }
-
 /* ---- Focus visibility (N4/F8) ---- */
 
 a:focus-visible,
@@ -120,37 +92,269 @@ button:focus-visible {
   box-shadow: var(--shadow-focus);
 }
 
-/* ================= Mobile: filters + card list ================= */
-/* This block is always present in markup terms; .js-matrix-ready hides it
-   at desktop widths once the matrix has been built (see below). It is the
-   ONLY thing shown at any width when JS is disabled. */
-
-/* #app-root itself is the actual first-paint element — it ships empty in
-   the static HTML, and js/render-home.js's init() appends .mobile-view
-   (filters + card-groups) into it after the page has already painted.
-   That append is what was causing the deterministic CLS hit measured on
-   this page, NOT a font swap: at first paint #app-root has zero height, so
-   .credentials/.site-footer render ~389px from the top; once JS runs, the
-   tall card list lands above them and shoves them down by nearly a full
-   viewport height in a later frame, which the Layout Instability API
-   scores fully because both elements already had a painted "before" rect.
-   Reserving #app-root's settled height up front means that height is
-   claimed before first paint, so the append no longer moves anything below
-   it. Scoped to mobile widths only — above 768px the matrix (much
-   shorter) is what actually ends up visible, and reserving mobile's
-   height there would leave a large dead gap under it. Measured at 412x823
-   (Lighthouse's default mobile viewport) with the mobile view fully
-   built, 12 cases: 4567px. This is a floor tied to the case count and
-   content length, not a one-time number — it MUST be re-measured any time
-   a case is added, removed, or grows enough to change the mobile card
-   list's total height (a stale, too-small value here reopens exactly the
-   layout shift this rule exists to prevent, since the real content then
-   grows past the reserved floor after first paint). */
-@media (max-width: 767px) {
-  #app-root {
-    min-height: 4567px;
-  }
+/* ================= Landing page: pastel palette ================= */
+/* Extends, never replaces, the locked tokens in tokens.css (paper/ink/
+   line/RAG stay exactly as they are — RAG in particular stays reserved
+   for case outcome status only, never decorative, so these hues were
+   chosen and verified to sit well clear of red/amber/green's positions
+   on the wheel). Two families, each a soft "fill" for backgrounds and a
+   deeper "readable" shade for links/labels/small text — a pastel fill is
+   too light to pass contrast as text color itself, so every colored
+   surface below uses ink for its body text and one of the *-deep tokens
+   only for mono labels/links. Verified: ink-on-fill ≥12:1 (AAA), both
+   *-deep tokens ≥5.8:1 against paper and white (AA, most of it AAA). */
+:root {
+  --pastel-blue: #C7D9F2;
+  --pastel-blue-tint: #E4EDF9;
+  --blue-deep: #3A5BA0;
+  --pastel-lavender: #DCD0EE;
+  --pastel-lavender-tint: #EFE8F7;
+  --lavender-deep: #5C4A87;
 }
+
+/* ---- Hero ---- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-5) var(--space-7);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--blue-deep);
+  margin: 0 0 var(--space-3);
+}
+
+.hero-thesis {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-display-1);
+  line-height: var(--leading-display-1);
+  letter-spacing: var(--tracking-display-1);
+  margin: 0 0 var(--space-4);
+  text-wrap: balance;
+}
+
+.hero-rule {
+  width: 64px;
+  height: 6px;
+  background: var(--pastel-blue);
+}
+
+.portrait-frame {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 4 / 5;
+  margin: 0 auto;
+}
+
+.portrait-frame--placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: var(--pastel-blue-tint);
+  border: var(--border-width) dashed var(--color-line);
+  color: var(--blue-deep);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.portrait-placeholder-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.portrait-placeholder-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .hero {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-7);
+    padding-top: var(--space-7);
+  }
+  .hero-copy { flex: 1 1 auto; max-width: 640px; }
+  .portrait-frame { flex: 0 0 auto; max-width: 220px; margin: 0; }
+}
+
+/* ---- About teaser ---- */
+
+.about-teaser {
+  padding: var(--space-6) var(--space-5);
+  border-top: var(--border-width) solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.about-teaser-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--lavender-deep);
+  margin: 0 0 var(--space-3);
+}
+
+.about-teaser-rule {
+  width: 40px;
+  height: 4px;
+  background: var(--pastel-lavender);
+}
+
+.about-teaser-card {
+  background: var(--pastel-lavender-tint);
+  padding: var(--space-5);
+}
+
+.about-teaser-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.35rem;
+  line-height: 1.4;
+  margin: 0 0 var(--space-4);
+  max-width: 32ch;
+}
+
+.about-teaser-body {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  margin: 0 0 var(--space-4);
+  max-width: 58ch;
+}
+
+.about-teaser-link {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--lavender-deep);
+  text-decoration: none;
+  border-bottom: var(--border-width) solid var(--lavender-deep);
+  padding-bottom: 2px;
+}
+.about-teaser-link:hover { opacity: 0.75; }
+
+@media (min-width: 768px) {
+  .about-teaser {
+    flex-direction: row;
+    gap: var(--space-8);
+  }
+  .about-teaser-label-col { flex: 0 0 200px; }
+  .about-teaser-card { flex: 1 1 auto; padding: var(--space-6); }
+}
+
+/* ---- Selected work ---- */
+
+.work-section {
+  padding: var(--space-6) var(--space-5) var(--space-7);
+  border-top: var(--border-width) solid var(--border-color);
+}
+
+.work-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--color-line);
+  margin: 0 0 var(--space-3);
+}
+
+.work-intro {
+  font-size: var(--text-body);
+  margin: 0 0 var(--space-6);
+  max-width: 55ch;
+}
+
+.work-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.work-card {
+  display: block;
+  text-decoration: none;
+  color: var(--color-ink);
+  padding: var(--space-5);
+}
+.work-card:hover { opacity: 0.9; }
+
+.work-card-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  margin: 0 0 var(--space-3);
+}
+
+.work-card-title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display-2);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.work-card--lead {
+  background: var(--pastel-blue);
+}
+.work-card--lead .work-card-meta { color: var(--blue-deep); }
+.work-card--lead .work-card-title { font-size: 1.7rem; margin-bottom: var(--space-4); }
+
+.work-card-cta {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--blue-deep);
+  border-bottom: var(--border-width) solid var(--blue-deep);
+  padding-bottom: 2px;
+}
+
+.work-card--medium {
+  background: var(--pastel-lavender);
+}
+.work-card--medium .work-card-meta { color: var(--lavender-deep); }
+.work-card--medium .work-card-title { font-size: 1.15rem; }
+
+.work-card--quiet {
+  background: transparent;
+  border: var(--border-width) solid var(--border-color);
+}
+.work-card--quiet .work-card-meta { color: var(--color-line); }
+.work-card--quiet .work-card-title { font-size: 1.15rem; }
+
+@media (min-width: 900px) {
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-5);
+  }
+  .work-card--lead { grid-row: span 2; padding: var(--space-7); }
+  .work-card--lead .work-card-title { font-size: 2.1rem; }
+}
+
+/* ================= Mobile: filters + card list ================= */
+/* Shared with /work — js/render-work.js builds this exact structure at
+   runtime for its filterable card grid (doc: "/work keeps its dual
+   filters and card grid"). Nothing here is home-page dead code. */
 
 .filters {
   padding: 0 var(--space-5) var(--space-4);
@@ -275,209 +479,99 @@ button:focus-visible {
   padding: var(--space-5) 0;
 }
 
-/* ================= Desktop: Coverage Matrix ================= */
+/* ---- Credentials band ---- */
 
-.matrix-scroll {
-  overflow-x: auto;
-  padding: 0 0 var(--space-7);
+.credentials-band {
+  background: var(--pastel-lavender-tint);
+  padding: var(--space-5) var(--space-5) var(--space-6);
 }
 
-.matrix {
-  display: grid;
-  border-top: var(--border-width) solid var(--border-color);
-  border-left: var(--border-width) solid var(--border-color);
-  margin: 0 var(--space-5);
-  min-width: 900px;
-}
-
-.matrix .col-head,
-.matrix .domain-label {
+.credentials-label {
   font-family: var(--font-mono);
-  font-weight: var(--weight-mono-bold);
+  font-size: var(--text-mono-label);
+  font-weight: var(--weight-mono-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono-label);
+  color: var(--lavender-deep);
+  margin: 0 0 var(--space-4);
+}
+
+.credentials-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.credential {
+  font-family: var(--font-mono);
   font-size: var(--text-mono-label);
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  line-height: 1.3;
-  padding: var(--space-3) var(--space-2);
-  border-right: var(--border-width) solid var(--border-color);
-  border-bottom: var(--border-width) solid var(--border-color);
+  line-height: 1.25rem;
+  color: var(--lavender-deep);
+}
+
+@media (min-width: 640px) {
+  .credentials-list { flex-direction: row; flex-wrap: wrap; gap: var(--space-6); }
+}
+
+/* ---- Close ---- */
+
+.close-section {
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+}
+
+.close-heading {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-display-2);
+  line-height: var(--leading-display-2);
+  max-width: 20ch;
+  margin: 0 auto var(--space-5);
+  text-wrap: balance;
+}
+
+.close-actions {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: stretch;
+  max-width: 320px;
+  margin: 0 auto;
 }
 
-.matrix .col-head.corner { background: var(--color-paper); }
-
-.matrix .domain-label {
-  color: var(--color-line);
-  transition: opacity 0.15s ease;
-}
-
-.matrix .col-head {
-  cursor: default;
-  transition: color 0.15s ease;
-}
-
-.matrix .lane-cell {
-  position: relative;
-  display: grid;
-  grid-template-columns: subgrid;
-  border-right: var(--border-width) solid var(--border-color);
-  border-bottom: var(--border-width) solid var(--border-color);
-  min-height: 48px;
-}
-
-.bar-group {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
-  height: 100%;
-}
-
-.bar-seg {
-  grid-row: 1;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  display: flex;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  font-family: var(--font-mono);
-  font-size: var(--text-mono-label);
-  font-weight: var(--weight-mono-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-mono-label);
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
+.btn-primary,
+.btn-secondary {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1rem;
   text-decoration: none;
-  transition: opacity 0.15s ease, background 0.15s ease;
+  padding: var(--space-4) var(--space-5);
+  text-align: center;
 }
 
-.bar-seg .label-org { display: block; overflow: hidden; text-overflow: ellipsis; }
-.bar-seg .label-year {
-  display: block;
-  color: var(--color-paper);
-  opacity: 0.65;
-  font-weight: var(--weight-mono-regular);
-  margin-top: 2px;
+.btn-primary {
+  background: var(--pastel-blue);
+  color: var(--color-ink);
 }
+.btn-primary:hover { opacity: 0.85; }
 
-/* Non-label segments carry a capability tick, not silence — a filled block
-   is never anonymous, regardless of how many segments a case breaks into.
-   Deliberately subordinate to the label: smaller, more muted, and a short
-   capability code rather than a checkmark, which reads as "verified"
-   instead of "this case continues here." */
-.bar-seg .tick {
-  opacity: 0.55;
-  font-size: 0.65rem;
-  font-weight: var(--weight-mono-regular);
+.btn-secondary {
+  border: var(--border-width) solid var(--color-ink);
+  color: var(--color-ink);
 }
+.btn-secondary:hover { background: var(--color-ink); color: var(--color-paper); }
 
-.bar-connector {
-  grid-row: 1;
-  align-self: start;
-  height: 2px;
-  margin-top: 6px;
-  background: repeating-linear-gradient(to right, var(--color-line) 0 4px, transparent 4px 8px);
-  transition: opacity 0.15s ease;
-}
-
-/* One link covers every segment + connector for a case — a screen reader
-   and Tab both see one stop, not N (F8). Achieved by making the *first*
-   segment the real <a> with an aria-label describing the whole case, and
-   subsequent segments/connectors visually part of it but not separately
-   focusable (aria-hidden). */
-.bar-group[data-focus-owner] a.bar-seg:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--color-paper), inset 0 0 0 4px var(--color-ink);
-}
-
-/* Hover/focus dimming stays inside the grid — never touches the thesis,
-   nav, or anything outside .matrix (Direction 1's rule). JS toggles
-   .is-active on whichever elements share the hovered domain or column;
-   everything else in the grid dims. */
-.matrix.is-dimming .domain-label,
-.matrix.is-dimming .bar-seg,
-.matrix.is-dimming .bar-connector {
-  opacity: 0.28;
-}
-.matrix.is-dimming .col-head { color: var(--color-line); opacity: 0.5; }
-.matrix.is-dimming .domain-label.is-active,
-.matrix.is-dimming .bar-seg.is-active,
-.matrix.is-dimming .bar-connector.is-active {
-  opacity: 1;
-}
-.matrix.is-dimming .col-head.is-active { color: var(--color-ink); opacity: 1; }
-
-/* ---- Motion A: one-shot matrix resolve on first build ---- */
-/* js/render-home.js sets --resolve-delay per bar and adds .matrix-resolving
-   once, right after building the matrix; it removes the class again once
-   the sequence finishes so the animation's held end-state never lingers to
-   block the .is-dimming rules above. Opacity + transform only — both are
-   purely visual (post-layout) properties, so this can never move anything
-   in or below the grid, and transform-origin is pinned left so bars draw
-   in rather than growing from their center. */
-.matrix-resolving .bar-seg,
-.matrix-resolving .bar-connector {
-  transform-origin: left center;
-  animation: bar-resolve 250ms ease-out both;
-  animation-delay: var(--resolve-delay, 0ms);
-}
-
-@keyframes bar-resolve {
-  from { opacity: 0; transform: scaleX(0.85); }
-  to { opacity: 1; transform: scaleX(1); }
-}
-
-/* ---- Motion B: live case count beside a hovered row/column label ---- */
-/* The count text is real and present from the first build of the matrix —
-   never inserted later — just held at opacity:0, so revealing it on hover
-   is a pure opacity change that can never shift the label's own width or
-   the header row's height. */
-.hover-count {
-  margin-left: var(--space-2);
-  color: var(--color-line);
-  font-weight: var(--weight-mono-regular);
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-.domain-label.is-active .hover-count,
-.col-head.is-active .hover-count {
-  opacity: 1;
+@media (min-width: 640px) {
+  .close-actions { flex-direction: row; justify-content: center; max-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bar-seg, .bar-connector, .domain-label, .col-head, .hover-count { transition: none; }
-}
-
-/* ---- Credentials strip ---- */
-
-.credentials {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
-  padding: var(--space-4) var(--space-5) var(--space-6);
-  border-top: var(--border-width) solid var(--border-color);
-}
-
-.credentials .credential {
-  font-family: var(--font-mono);
-  font-size: var(--text-mono-label);
-  /* Explicit, not "normal": row height in this flex-wrap strip otherwise
-     comes from the active font's own ascent+descent+line-gap, which still
-     differs by ~2px/row between JetBrains Mono and its Menlo fallback even
-     with size-adjust/ascent-override/descent-override calibrated (those
-     match horizontal glyph metrics, not the vertical box exactly). That
-     residual per-row difference was the actual, deterministic source of
-     the CLS hit on this element (measured 115px fallback vs 121px real at
-     412px width) — .card-groups' own height was never the cause. Fixing
-     line-height to a constant removes the font-metric dependency entirely:
-     both fonts now render this block at the same 133px, confirmed by
-     rendering each state with the other's font file blocked. */
-  line-height: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  .work-card, .btn-primary, .btn-secondary, .about-teaser-link, .case-card, .chip {
+    transition: none;
+  }
 }
 
 /* ---- Footer ---- */
@@ -495,17 +589,3 @@ button:focus-visible {
 }
 .site-footer a { color: var(--color-ink); text-decoration: none; }
 .site-footer a:hover { text-decoration: underline; }
-
-/* ================= Breakpoint: matrix replaces card list ================= */
-/* Only takes effect once JS has actually built the matrix (.js-matrix-ready
-   on <html>) — a wide viewport with JS disabled still gets the card list,
-   satisfying N6. */
-
-.matrix-scroll { display: none; }
-
-@media (min-width: 768px) {
-  html.js-matrix-ready .mobile-view { display: none; }
-  html.js-matrix-ready .matrix-scroll { display: block; }
-  .instruction-line .mobile-only-text { display: none; }
-  .instruction-line .desktop-only-text { display: inline; }
-}

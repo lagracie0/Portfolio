@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { chromium } from 'playwright';
 import { DOMAINS, CASES } from '../data/cases.js';
-import { isNeedsInput } from '../js/matrix.js';
+import { isNeedsInput } from '../js/case-utils.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');

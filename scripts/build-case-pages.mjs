@@ -5,19 +5,20 @@
 // [NEEDS INPUT: ...] renders with a loud, unmissable flag (see
 // css/case.css .needs-input) and a draft banner, so an unfinished page can
 // never be mistaken for finished copy. This applies identically regardless
-// of priority: a P0 matrix bar with open items used to link nowhere at all
-// (the page was refused outright), which is worse than a visibly unfinished
-// page — a 404 gives a visitor no information, a draft banner gives them
-// the truth. The guard still blocks a deploy: the script exits non-zero and
-// prints every P0 case with open items and exactly what's missing, so an
-// unfinished P0 case can't ship silently — it just isn't a 404 while it's
-// being worked on.
+// of priority: a P0 case with open items used to be refused outright (no
+// page written for it at all), back when the retired Coverage Matrix
+// linked to every case — a matrix bar pointing at a 404 is worse than a
+// visibly unfinished page, since a 404 gives a visitor no information and
+// a draft banner gives them the truth. The guard still blocks a deploy:
+// the script exits non-zero and prints every P0 case with open items and
+// exactly what's missing, so an unfinished P0 case can't ship silently —
+// it just isn't a 404 while it's being worked on.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { DOMAINS, CAPABILITIES, CASES } from '../data/cases.js';
-import { isNeedsInput, displayLabel, displayDateRange } from '../js/matrix.js';
+import { isNeedsInput, displayLabel, displayDateRange } from '../js/case-utils.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -233,10 +234,11 @@ ${hasOpenItems ? '<div class="draft-banner">Draft — contains placeholder conte
 // Per-capability domain coverage, with single-case dependencies flagged.
 // Runs on every build, not on request — a domain's only case for a given
 // capability can lose that tag in an ordinary content edit (it happened to
-// Civic x Build-from-zero the same week this check was written), and the
-// matrix's column-level argument quietly weakens the moment that happens.
+// Civic x Build-from-zero the same week this check was written), quietly
+// weakening the breadth-of-evidence argument the whole site is making.
 // Printing this every time means that's visible immediately, not only when
-// someone thinks to ask.
+// someone thinks to ask — this outlived the Coverage Matrix that motivated
+// it because the underlying coverage question is still real without it.
 function printCoverageReport() {
   console.log('\nCapability coverage by domain (single-case dependencies flagged):');
   CAPABILITIES.forEach((cap) => {
@@ -285,7 +287,7 @@ function run() {
       console.log(`\n  ${slug} — ${openItems.length} open item(s):`);
       openItems.forEach(({ path, text }) => console.log(`    - ${path}: ${text}`));
     });
-    console.log('\nPages were written with a draft banner so no matrix bar links to a 404, but this build does not clear the deploy gate. Resolve the items above.\n');
+    console.log('\nPages were written with a draft banner so no case links to a 404, but this build does not clear the deploy gate. Resolve the items above.\n');
     process.exitCode = 1;
   } else {
     console.log('\nNo incomplete P0 cases.\n');

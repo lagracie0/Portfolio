@@ -1,5 +1,5 @@
 import { DOMAINS, CAPABILITIES, CASES } from '../data/cases.js';
-import { displayLabel, displayDateRange, isNeedsInput } from './matrix.js';
+import { displayLabel, displayDateRange, isNeedsInput } from './case-utils.js';
 
 const domainBySlug = new Map(DOMAINS.map((d) => [d.slug, d]));
 const capabilityBySlug = new Map(CAPABILITIES.map((c) => [c.slug, c]));
