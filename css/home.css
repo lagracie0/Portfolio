@@ -57,6 +57,11 @@ a { color: inherit; }
   font-family: var(--font-display);
   font-weight: var(--weight-display);
   font-size: 1.05rem;
+  /* Explicit, not "normal" — .site-header centers its row on the tallest
+     child (align-items: center), so a font-metric-dependent line-height
+     here shifts every other header element's vertical position, not just
+     its own box. Same bug class as the mono fixes above, different font. */
+  line-height: 1.2;
   letter-spacing: -0.005em;
   text-decoration: none;
 }
@@ -71,6 +76,11 @@ a { color: inherit; }
 .site-header nav a {
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
+  /* Explicit, not "normal" — same font-metric-dependent box-height bug as
+     .credentials .credential/.case-block h2 elsewhere in this file, just
+     never surfaced here before because nothing forced a shift on this
+     specific page to line up in the same frame as anything else. */
+  line-height: 1.25rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
   text-decoration: none;
@@ -401,10 +411,19 @@ button:focus-visible {
   cursor: pointer;
   flex: 0 0 auto;
 }
-.chip[aria-pressed="true"] {
-  background: var(--color-ink);
-  border-color: var(--color-ink);
-  color: var(--color-paper);
+/* Domain row is always first, capability row second (render-work.js
+   appends them in that fixed order) — colour-coded the same way the
+   landing page separates "About" (lavender) from "Selected work" (blue),
+   rather than one flat black press state for every chip. */
+.filter-row:nth-of-type(1) .chip[aria-pressed="true"] {
+  background: var(--pastel-blue);
+  border-color: var(--pastel-blue);
+  color: var(--color-ink);
+}
+.filter-row:nth-of-type(2) .chip[aria-pressed="true"] {
+  background: var(--pastel-lavender);
+  border-color: var(--pastel-lavender);
+  color: var(--color-ink);
 }
 .chip:hover { border-color: var(--color-ink); }
 
@@ -419,23 +438,31 @@ button:focus-visible {
 .card-group h2 {
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
+  /* Explicit, not "normal" — see .case-header .case-domain in case.css. */
+  line-height: 1.25rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
-  border-bottom: var(--border-width) solid var(--border-color);
+  color: var(--blue-deep);
+  border-bottom: 3px solid var(--pastel-blue);
   padding-bottom: var(--space-2);
   margin: 0 0 var(--space-3);
+  display: inline-block;
 }
 
+/* Cards alternate the two pastel families for rhythm across a list, same
+   device as .credential-list/.method-step on the other pages — replaces
+   the old uniform hairline-bordered box with the landing page's flat
+   colour-block treatment. */
 .case-card {
   display: block;
   text-decoration: none;
   color: var(--color-ink);
-  border: var(--border-width) solid var(--border-color);
+  background: var(--pastel-blue-tint);
   padding: var(--space-4);
   margin-bottom: var(--space-3);
 }
-.case-card:hover { border-color: var(--color-ink); }
+.case-card:nth-of-type(even) { background: var(--pastel-lavender-tint); }
+.case-card:hover { opacity: 0.85; }
 
 .case-card .card-title {
   font-family: var(--font-serif);
@@ -449,9 +476,10 @@ button:focus-visible {
   font-size: var(--text-mono-label);
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  color: var(--blue-deep);
   margin: 0 0 var(--space-3);
 }
+.case-card:nth-of-type(even) .card-org { color: var(--lavender-deep); }
 
 .card-tags {
   display: flex;
@@ -467,8 +495,8 @@ button:focus-visible {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  padding: 2px var(--space-2);
-  border: var(--border-width) solid var(--color-line);
+  padding: 3px var(--space-2);
+  background: var(--color-paper);
   color: var(--color-line);
 }
 

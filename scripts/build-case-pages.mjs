@@ -144,6 +144,11 @@ function pageForCase(caseObj, hasOpenItems) {
 <title>${escapeHtml(caseObj.title)} — Ayomide Grace Amusan</title>
 <meta name="description" content="${escapeHtml(metaDescription)}">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="preload" as="font" type="font/woff2" href="../../fonts/archivo-black-expanded.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../../fonts/jetbrains-mono-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../../fonts/jetbrains-mono-bold.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../../fonts/source-serif-4-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../../fonts/source-serif-4-italic.woff2" crossorigin>
 <link rel="stylesheet" href="../../css/tokens.css">
 <link rel="stylesheet" href="../../css/home.css">
 <link rel="stylesheet" href="../../css/case.css">

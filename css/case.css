@@ -1,8 +1,12 @@
-/* Case page layout. Shares css/tokens.css and the header/footer patterns
-   from css/home.css (linked separately by the generated page) but owns its
-   own six-block narrative layout, RAG outcome badges, and the loud
-   NEEDS-INPUT flagging that keeps placeholder content from ever being
-   mistaken for real copy. */
+/* Case page layout. Shares css/tokens.css, the header/footer patterns, and
+   the pastel accent tokens (--pastel-blue etc.) from css/home.css (linked
+   separately by the generated page) — this is the landing page's visual
+   system, not a second one, since this is the page a visitor actually
+   reads. Owns its own six-block narrative layout, RAG outcome badges, and
+   the loud NEEDS-INPUT flagging that keeps placeholder content from ever
+   being mistaken for real copy — none of that changes here: RAG stays
+   reserved for status only, and .needs-input/.draft-banner stay exactly
+   as loud as before (see their rules further down). */
 
 .case-header {
   padding: var(--space-6) var(--space-5) var(--space-5);
@@ -12,10 +16,20 @@
 .case-header .case-domain {
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
+  /* Explicit, not "normal" — an inline-block mono element with its own
+     border-bottom otherwise takes its box height from the active font's
+     line-height, which still differs by a couple of px between JetBrains
+     Mono and its fallback even with size-adjust calibrated (same bug
+     .credentials .credential in home.css was fixed for previously; this
+     is a fresh instance of it, not a new bug class). */
+  line-height: 1.25rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  color: var(--blue-deep);
   margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 3px solid var(--pastel-blue);
+  display: inline-block;
 }
 
 .case-header h1 {
@@ -32,6 +46,9 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 1.05rem;
+  /* Explicit, not "normal" — same italic Source Serif 4 line-height gap
+     as .page-header .page-dek in page.css. */
+  line-height: var(--leading-body-lead);
   color: var(--color-ink);
   margin: 0 0 var(--space-4);
 }
@@ -47,11 +64,14 @@
 .case-header .card-tags li {
   font-family: var(--font-mono);
   font-size: 0.7rem;
+  /* Explicit, not "normal" — same reasoning as every other line-height
+     added in this pass. */
+  line-height: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  padding: 2px var(--space-2);
-  border: var(--border-width) solid var(--color-line);
-  color: var(--color-line);
+  padding: 3px var(--space-2);
+  background: var(--pastel-blue-tint);
+  color: var(--blue-deep);
 }
 
 .case-body {
@@ -67,12 +87,15 @@
 .case-block h2 {
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
+  /* See .case-header .case-domain above for why this is explicit. */
+  line-height: 1.25rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
-  border-bottom: var(--border-width) solid var(--border-color);
+  color: var(--blue-deep);
+  border-bottom: 3px solid var(--pastel-blue);
   padding-bottom: var(--space-2);
   margin: 0 0 var(--space-4);
+  display: inline-block;
 }
 
 .case-block p,
@@ -147,6 +170,7 @@
   font-weight: var(--weight-mono-bold);
   font-size: 1.5rem;
   font-variant-numeric: tabular-nums;
+  color: var(--blue-deep);
   grid-row: 1 / 3;
   align-self: start;
 }
@@ -204,7 +228,7 @@
   gap: var(--space-3);
 }
 .artifact-list li {
-  border: var(--border-width) solid var(--color-line);
+  background: var(--pastel-lavender-tint);
   padding: var(--space-4);
   font-family: var(--font-serif);
   font-size: 0.95rem;
@@ -223,6 +247,7 @@
   color: var(--color-ink);
   max-width: 45%;
 }
+.case-nav a:hover .nav-label { color: var(--lavender-deep); }
 .case-nav .nav-label {
   display: block;
   font-family: var(--font-mono);

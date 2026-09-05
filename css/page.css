@@ -1,6 +1,9 @@
 /* Shared layout for /about, /contact, /method — reuses .case-block/.case-body
    from case.css for prose sections, and adds the few components specific to
-   these three pages (experience entries, method steps, contact block). */
+   these three pages (experience entries, method steps, contact block). Uses
+   the same pastel accent tokens (--pastel-blue etc., defined in
+   css/home.css, loaded on every page) as the landing page and case pages —
+   one visual system, not three. */
 
 .page-header {
   padding: var(--space-6) var(--space-5) var(--space-5);
@@ -10,10 +13,17 @@
 .page-header .page-eyebrow {
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
+  /* Explicit, not "normal" — see css/case.css's .case-header .case-domain
+     for why an inline-block mono element with its own border-bottom needs
+     this (same bug class as .credentials .credential in home.css). */
+  line-height: 1.25rem;
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  color: var(--blue-deep);
   margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 3px solid var(--pastel-blue);
+  display: inline-block;
 }
 
 .page-header h1 {
@@ -29,6 +39,10 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 1.05rem;
+  /* Explicit, not "normal" — italic Source Serif 4 vs. its Georgia-based
+     fallback differs in line-height too, not just the mono/display faces
+     fixed elsewhere in this pass. */
+  line-height: var(--leading-body-lead);
   color: var(--color-ink);
   margin: var(--space-3) 0 0;
   max-width: 60ch;
@@ -42,8 +56,8 @@
 
 /* Experience entry (About) */
 .experience-entry {
-  border-top: var(--border-width) solid var(--border-color);
-  padding-top: var(--space-4);
+  background: var(--pastel-blue-tint);
+  padding: var(--space-4) var(--space-5);
 }
 .experience-entry .role-title {
   font-family: var(--font-serif);
@@ -56,7 +70,7 @@
   font-size: var(--text-mono-label);
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  color: var(--blue-deep);
   margin: 0 0 var(--space-3);
 }
 
@@ -72,7 +86,7 @@
   font-size: var(--text-mono-label);
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  color: var(--lavender-deep);
   margin: 0 0 var(--space-1);
 }
 .tools-list dd {
@@ -81,7 +95,9 @@
   margin: 0;
 }
 
-/* Credentials list (About) */
+/* Credentials list (About) — alternates the two pastel families so a run
+   of otherwise-identical entries reads with some rhythm, same idea as the
+   landing page's lead/medium work-card treatment. */
 .credential-list {
   list-style: none;
   padding: 0;
@@ -93,8 +109,11 @@
 .credential-list li {
   font-family: var(--font-serif);
   font-size: var(--text-body);
-  border-top: var(--border-width) solid var(--border-color);
-  padding-top: var(--space-3);
+  background: var(--pastel-blue-tint);
+  padding: var(--space-3) var(--space-4);
+}
+.credential-list li:nth-child(even) {
+  background: var(--pastel-lavender-tint);
 }
 .credential-list .credential-issuer {
   font-family: var(--font-mono);
@@ -126,18 +145,20 @@
   display: grid;
   grid-template-columns: 3rem 1fr;
   gap: var(--space-4);
-  border-top: var(--border-width) solid var(--border-color);
-  padding: var(--space-5) 0;
+  background: var(--pastel-blue-tint);
+  padding: var(--space-5);
+  margin-bottom: var(--space-3);
 }
-.method-step:last-child { border-bottom: var(--border-width) solid var(--border-color); }
+.method-step:nth-child(even) { background: var(--pastel-lavender-tint); }
 
 .method-step::before {
   content: counter(method-step, decimal-leading-zero);
   font-family: var(--font-mono);
   font-size: 1.1rem;
-  color: var(--color-line);
+  color: var(--blue-deep);
   font-weight: var(--weight-mono-bold);
 }
+.method-step:nth-child(even)::before { color: var(--lavender-deep); }
 
 .method-step h2 {
   font-family: var(--font-serif);
@@ -162,7 +183,7 @@
   text-decoration: none;
   border-bottom: 1px solid var(--color-ink);
 }
-.method-step .evidence-link:hover { color: var(--color-line); border-color: var(--color-line); }
+.method-step .evidence-link:hover { opacity: 0.7; }
 
 /* Contact page */
 .contact-links {
@@ -174,26 +195,28 @@
   gap: var(--space-4);
 }
 .contact-links li {
-  border-top: var(--border-width) solid var(--border-color);
-  padding-top: var(--space-4);
+  background: var(--pastel-blue-tint);
+  padding: var(--space-4);
 }
+.contact-links li:nth-child(even) { background: var(--pastel-lavender-tint); }
 .contact-links .contact-label {
   display: block;
   font-family: var(--font-mono);
   font-size: var(--text-mono-label);
   text-transform: uppercase;
   letter-spacing: var(--tracking-mono-label);
-  color: var(--color-line);
+  color: var(--blue-deep);
   margin-bottom: var(--space-1);
 }
+.contact-links li:nth-child(even) .contact-label { color: var(--lavender-deep); }
 .contact-links a {
   font-family: var(--font-serif);
   font-size: 1.2rem;
   color: var(--color-ink);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-ink);
 }
-.contact-links a:hover { border-color: var(--color-ink); }
+.contact-links a:hover { opacity: 0.7; }
 
 .availability-note {
   font-family: var(--font-serif);
