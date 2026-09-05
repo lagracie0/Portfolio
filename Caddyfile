@@ -1,0 +1,41 @@
+# Railway injects PORT at runtime — {$PORT} pulls it from the
+# environment; there's no fixed port to hardcode.
+:{$PORT} {
+	root * /srv
+	encode zstd gzip
+
+	# Fonts and OG images never change without changing filename in
+	# practice (a new case gets a new OG image file; an existing one is
+	# only ever replaced deliberately) — safe to cache for a year.
+	@immutable {
+		path *.woff2 *.png *.jpg *.jpeg *.webp *.svg
+	}
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	# HTML, CSS and JS all change on every deploy (case content, styling,
+	# behaviour) without their filenames changing — caching these long
+	# would mean a visitor's browser keeps serving yesterday's page after
+	# a deploy fixes it. no-cache still lets the browser keep a local copy
+	# and revalidate it cheaply (a 304 when nothing changed) rather than
+	# re-downloading every time.
+	@revalidate {
+		path *.html *.css *.js
+	}
+	header @revalidate Cache-Control "no-cache"
+
+	# Custom 404 page, real status code preserved — Caddy's documented
+	# pattern for this: rewrite internally to the error page and serve it
+	# through file_server, which still reports 404 to the client.
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+
+	# file_server resolves /work/some-slug/ to its index.html on its own,
+	# and redirects a request for /work/some-slug (no trailing slash) to
+	# the canonical path with one — no extra rewrite rules needed for
+	# clean URLs on a directory-per-case structure like this site's.
+	file_server {
+		index index.html
+	}
+}

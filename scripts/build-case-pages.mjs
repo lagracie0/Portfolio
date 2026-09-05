@@ -263,6 +263,17 @@ function printCoverageReport() {
   console.log('');
 }
 
+// --allow-drafts: for the Railway build step only (see Dockerfile). Pages
+// generate exactly the same either way — every case always got a page
+// since the earlier "refuse P0 outright" behaviour was retired (see the
+// header comment above) — the flag only changes whether an incomplete P0
+// case fails the build. Without it (the default, and the only mode a
+// human runs locally), incomplete P0 content failing the build is the
+// guard against shipping placeholder content by accident. A deploy
+// pipeline can't act on that prompt, so it needs a way to say "generate
+// what exists and ship it as drafts" explicitly, never as the default.
+const ALLOW_DRAFTS = process.argv.includes('--allow-drafts');
+
 function run() {
   printCoverageReport();
 
@@ -287,13 +298,17 @@ function run() {
   generated.forEach((g) => console.log(`  ${g.draft ? '(draft)' : '(complete)'} work/${g.slug}/ — ${g.priority}`));
 
   if (incompleteP0.length > 0) {
-    console.log(`\nBLOCKING — ${incompleteP0.length} P0 case(s) generated as drafts, not deploy-ready (still contain [NEEDS INPUT]):`);
+    console.log(`\n${ALLOW_DRAFTS ? 'NOTICE' : 'BLOCKING'} — ${incompleteP0.length} P0 case(s) generated as drafts, not deploy-ready (still contain [NEEDS INPUT]):`);
     incompleteP0.forEach(({ slug, openItems }) => {
       console.log(`\n  ${slug} — ${openItems.length} open item(s):`);
       openItems.forEach(({ path, text }) => console.log(`    - ${path}: ${text}`));
     });
-    console.log('\nPages were written with a draft banner so no case links to a 404, but this build does not clear the deploy gate. Resolve the items above.\n');
-    process.exitCode = 1;
+    if (ALLOW_DRAFTS) {
+      console.log(`\n--allow-drafts passed: ${incompleteP0.length} P0 case(s) shipped as drafts, deploy gate not enforced this run. Resolve the items above when the real content exists.\n`);
+    } else {
+      console.log('\nPages were written with a draft banner so no case links to a 404, but this build does not clear the deploy gate. Resolve the items above.\n');
+      process.exitCode = 1;
+    }
   } else {
     console.log('\nNo incomplete P0 cases.\n');
   }

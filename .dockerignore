@@ -1,0 +1,9 @@
+# Everything here is repo/process material, not site content — none of
+# it should ever be network-reachable on the deployed site, and none of
+# it is needed to run the two build scripts either.
+.git
+.gitignore
+.DS_Store
+node_modules
+tasks/
+*.md
