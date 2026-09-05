@@ -1,0 +1,32 @@
+# Cloudflare Pages header rules — same intent as the Caddyfile prepared
+# for the (currently unused) Railway config, adapted to Cloudflare's own
+# _headers syntax, which is explicitly modelled on Netlify's format.
+#
+# Specific rules are listed before the broad catch-all. Both Cloudflare's
+# and Netlify's own docs describe matching by most-specific pattern, and
+# this ordering is ALSO correct if it instead resolves by first-match
+# top-to-bottom — the one model it would be wrong under is a same-header
+# "last rule wins" merge, which isn't how either platform documents this
+# feature. Worth a direct check after the first deploy regardless (curl
+# -I a font URL and a page URL, confirm each gets the Cache-Control below
+# and not the other's) — Cloudflare Pages isn't available in this
+# environment, so this file's real-world behaviour is unverified here.
+#
+# Fonts and OG images only ever change by getting a new filename in
+# practice (a new case gets a new OG image; an existing one is only ever
+# replaced deliberately) — safe to cache for a year. Everything else
+# (every page, whether the URL literally ends in .html or is a clean
+# directory-style path like /work/some-slug/, plus every .css and .js)
+# changes on a deploy without its filename changing, so it stays
+# no-cache: the browser still keeps a local copy and revalidates it
+# cheaply (a 304 when nothing changed) rather than re-downloading, but
+# never risks serving yesterday's page after a deploy fixes something.
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/og/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  Cache-Control: no-cache

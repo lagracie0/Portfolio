@@ -45,37 +45,65 @@ not a dependency of this project. Run it by hand, with an external
 Playwright install, only when case content changes enough to need new
 OG images (see that script's own header comment for the exact steps).
 
-## Deploying to Railway
+## Deploying to Cloudflare Pages
 
-The site is served as static files by [Caddy](https://caddyserver.com/)
-inside a two-stage Docker build (`Dockerfile`): the first stage runs the
-three generator scripts above (with `--allow-drafts`) against a copy of
-the repo, the second stage is just Caddy serving the result on the port
-Railway assigns it (`Caddyfile`, using `{$PORT}`). `railway.json` points
-Railway at the Dockerfile explicitly.
+Current deploy target — Railway's free tier is capped and both project
+slots are already in use elsewhere, so this site deploys to
+[Cloudflare Pages](https://pages.cloudflare.com/) instead. **Nothing has
+been connected or deployed from this repo** — this is prepared
+configuration only; connect it from the Cloudflare dashboard yourself.
 
-**Nothing has been connected to Railway or deployed from this repo** —
-this is prepared configuration, not a live deploy. To actually ship it:
+Cloudflare Pages builds a git-connected project using **dashboard
+settings** (build command, output directory), not a repo config file —
+so those two values need to be typed into the dashboard once, by hand,
+when the project is created:
 
-1. Push this repo to GitHub (or your Railway-connected git host) with
-   all of the above committed — `Dockerfile`, `Caddyfile`, `railway.json`,
-   `.dockerignore`, `404.html`.
-2. In the Railway dashboard: **New Project → Deploy from GitHub repo**,
-   and pick this repository.
-3. Railway will detect `railway.json` and build from the `Dockerfile`
-   automatically — no build/start command needs setting manually, and
-   no environment variables need adding (`PORT` is injected by Railway
-   itself; the site has no other runtime configuration, no database, no
-   secrets).
-4. Once the first deploy finishes, Railway gives you a
-   `*.up.railway.app` URL — open it and click through a few pages
-   (home, `/work`, a case page, a deliberately-mistyped URL to check the
-   404 page) before trusting it.
-5. Optional: **Settings → Networking → Custom Domain** to attach a real
-   domain, then follow Railway's DNS instructions (a `CNAME` record,
-   typically).
-6. Every subsequent push to the connected branch redeploys
-   automatically, re-running the generator scripts against whatever
+1. Push this repo to GitHub (or wherever Cloudflare Pages connects to)
+   with everything below committed — `_headers`, `.nvmrc`, `404.html`.
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages →
+   Connect to Git**, and pick this repository.
+3. In the project's build settings, set:
+   - **Build command:**
+     `node scripts/build-home.mjs && node scripts/build-noscript.mjs && node scripts/build-case-pages.mjs --allow-drafts`
+   - **Build output directory:** `/` — the three scripts above rewrite
+     `index.html`, `work/index.html`, and every `work/{slug}/index.html`
+     *in place*; there's no separate `dist/`-style output folder, the
+     built site is the repo root itself.
+   - **Root directory:** leave as the repo root (default).
+   - No environment variables are needed — no database, no secrets, and
+     the Node version is pinned by `.nvmrc` (Cloudflare Pages reads it
+     automatically; if that's ever not picked up, set the `NODE_VERSION`
+     environment variable to `20` as a fallback).
+4. `_headers` at the repo root sets cache rules automatically on
+   deploy — `public, max-age=31536000, immutable` for `.woff2` fonts and
+   the OG images under `assets/og/`, `no-cache` for everything else
+   (every page, `.css`, `.js`), so a deploy can never leave a visitor's
+   browser serving a stale stylesheet or an old page. Nothing to
+   configure here beyond the file existing.
+5. `404.html` at the repo root is picked up automatically by Cloudflare
+   Pages' own convention for a site-wide custom 404 (served with a real
+   404 status, not 200) — no configuration needed. It uses **absolute**
+   asset paths (`/css/...`, not `../css/...`) deliberately: Cloudflare
+   serves this page in place at whatever URL was actually requested, so
+   a relative path would resolve against that URL's depth, not the
+   file's real location.
+6. Clean URLs (`/work/some-slug/` → its `index.html`) work the same way
+   they do locally and under the (currently unused) Caddy config —
+   Cloudflare Pages resolves a directory-style path to its `index.html`
+   automatically for a static deployment, no rewrite rules needed.
+7. Once the first deploy finishes, Cloudflare gives you a
+   `*.pages.dev` URL — open it and click through a few pages (home,
+   `/work`, a case page, a deliberately-mistyped URL to check the 404
+   page) before trusting it. Also worth a direct check with `curl -I` on
+   a font URL and a page URL to confirm each actually gets the
+   `Cache-Control` value intended for it — the `_headers` file's rule
+   ordering is written to be correct under either of Cloudflare's
+   documented matching behaviours, but this project has no way to run
+   Cloudflare Pages itself to verify that live.
+8. Optional: **Custom domains** tab to attach a real domain, then follow
+   Cloudflare's DNS instructions.
+9. Every subsequent push to the connected branch redeploys
+   automatically, re-running the build command against whatever
    `data/cases.js` says at that commit.
 
 **Before sharing the domain with anyone:** the CV PDF referenced by
@@ -84,3 +112,35 @@ exist yet — every one of those links currently 404s. This is a real,
 live-site defect the moment this is public, not a placeholder that's
 safe to leave. Add the real file at that exact path before the link
 goes out to anyone.
+
+## Alternative deploy target: Railway (prepared, not currently used)
+
+Railway was the original deploy target; its free tier is capped and
+both available project slots are in use elsewhere, so Cloudflare Pages
+(above) is what's actually live. The Railway configuration is kept in
+the repo rather than removed — it costs nothing sitting unused, and
+Railway may be worth revisiting later.
+
+The site is served as static files by [Caddy](https://caddyserver.com/)
+inside a two-stage Docker build (`Dockerfile`): the first stage runs the
+three generator scripts above (with `--allow-drafts`) against a copy of
+the repo, the second stage is just Caddy serving the result on the port
+Railway assigns it (`Caddyfile`, using `{$PORT}`). `railway.json` points
+Railway at the Dockerfile explicitly. To use it instead of Cloudflare:
+
+1. In the Railway dashboard: **New Project → Deploy from GitHub repo**,
+   and pick this repository.
+2. Railway will detect `railway.json` and build from the `Dockerfile`
+   automatically — no build/start command needs setting manually, and
+   no environment variables need adding (`PORT` is injected by Railway
+   itself).
+3. Once the first deploy finishes, open the `*.up.railway.app` URL and
+   click through the same pages listed in the Cloudflare steps above
+   before trusting it.
+4. Optional: **Settings → Networking → Custom Domain** for a real
+   domain, then follow Railway's DNS instructions.
+
+Neither this environment nor the one used to prepare the Cloudflare
+config above has Docker or Caddy available, so this path is unverified
+beyond the generator scripts themselves running correctly — the same
+honest caveat as when it was first prepared.
